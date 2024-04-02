@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 interface DrinkBlockProps {
@@ -12,8 +11,7 @@ const DrinkBlock: React.FC<DrinkBlockProps> = ({ title, href, icon }) => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/drinks/${title.toLowerCase()}`);
-    console.log(title.toLowerCase());
+    router.push(`/drinks/${title.split(" ").join("").toLowerCase()}`);
   };
 
   return (

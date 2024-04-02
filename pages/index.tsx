@@ -7,10 +7,13 @@ import DrinkBlock from "../components/DrinkBlock";
 const drinks = [
   { title: "Good Chemistry", href: "/drinks" },
   { title: "Wiper & True", href: "/drinks" },
-  { title: "Beer", href: "/drinks" },
+  { title: "Lager", href: "/drinks" },
+  { title: "Bitter", href: "/drinks" },
+  { title: "Ale", href: "/drinks" },
   { title: "Cider", href: "/drinks" },
   { title: "Wine", href: "/drinks" },
   { title: "Spirits", href: "/drinks" },
+  { title: "Low to No", href: "/drinks" },
   { title: "Soft Drinks", href: "/drinks" },
 ];
 
