@@ -3,6 +3,8 @@ import type { NextPageWithLayout } from "./_app";
 import { Inter } from "next/font/google";
 import Layout from "../components/Layout";
 import DrinkBlock from "../components/DrinkBlock";
+import { useOrder } from "@/contexts/OrderContext";
+import OrderButton from "@/components/OrderButton";
 
 const drinks = [
   { title: "Good Chemistry", href: "/drinks" },
@@ -20,6 +22,10 @@ const drinks = [
 const inter = Inter({ subsets: ["latin"] });
 
 const Page: NextPageWithLayout = () => {
+  const { order, addToOrder, clearOrder } = useOrder();
+
+  console.log(order, "current ORDER");
+
   return (
     <div className="w-full max-w-screen-xl">
       <p className="text-2xl">Welcome!</p>
@@ -27,6 +33,9 @@ const Page: NextPageWithLayout = () => {
         {drinks.map((drink) => (
           <DrinkBlock key={drink.title} {...drink} />
         ))}
+      </div>
+      <div>
+        <OrderButton />
       </div>
     </div>
   );

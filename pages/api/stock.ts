@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Drink } from "../../../interfaces/Drink";
-import { fetchDrinksByType } from "../../../lib/drinks";
+import { Drink } from "../../interfaces/Drink";
+import { fetchDrinks } from "../../lib/drinks";
 
 interface ErrorMessage {
   message: string;
@@ -12,10 +12,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<DrinksResponse>
 ) {
-  const { id } = req.query;
-
   try {
-    const drinks = await fetchDrinksByType(id as string);
+    const drinks = await fetchDrinks();
     res.status(200).json(drinks);
   } catch (error) {
     console.error(error);
