@@ -1,12 +1,5 @@
 // src/context/state.js
-import {
-  createContext,
-  useState,
-  useContext,
-  FC,
-  ReactNode,
-  useEffect,
-} from "react";
+import { createContext, useState, useContext, FC, ReactNode } from "react";
 import { DrinkOrder } from "@/interfaces/Drink";
 
 interface OrderItem {

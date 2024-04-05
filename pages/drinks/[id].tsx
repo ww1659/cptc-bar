@@ -1,10 +1,5 @@
 import type { ReactElement } from "react";
 import type { NextPageWithLayout } from ".././_app";
-import type {
-  InferGetStaticPropsType,
-  GetStaticProps,
-  GetStaticPaths,
-} from "next";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 import { useRouter } from "next/router";
