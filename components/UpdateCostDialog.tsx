@@ -16,27 +16,27 @@ import { mutate } from "swr";
 
 interface UpdateDialogProps {
   drink: Drink;
-  quantityDialogOpen: boolean;
-  setQuantityDialogOpen: (isOpen: boolean) => void;
+  costDialogOpen: boolean;
+  setCostDialogOpen: (isOpen: boolean) => void;
 }
 
-const UpdateQuantityDialog: React.FC<UpdateDialogProps> = ({
+const UpdateCostDialog: React.FC<UpdateDialogProps> = ({
   drink,
-  quantityDialogOpen,
-  setQuantityDialogOpen,
+  costDialogOpen,
+  setCostDialogOpen,
 }) => {
-  const [quantityInput, setQuantityInput] = useState("");
+  const [costInput, setCostInput] = useState("");
 
   const onClose = () => {
-    setQuantityDialogOpen(false);
+    setCostDialogOpen(false);
   };
 
-  const handleQuantityInput = (value: string) => {
-    setQuantityInput(value);
+  const handleCostInput = (value: string) => {
+    setCostInput(value);
   };
 
   const handleSaveClick = async (drink: Drink) => {
-    const quantityInt = parseInt(quantityInput, 10);
+    const costInt = parseInt(costInput, 10);
 
     try {
       const response = await fetch(`http://localhost:3000/api/stock`, {
@@ -46,15 +46,15 @@ const UpdateQuantityDialog: React.FC<UpdateDialogProps> = ({
         },
         body: JSON.stringify({
           drinkId: drink.drinks_id,
-          quantity: quantityInt,
-          action: "updateQuantity",
+          cost: costInt,
+          action: "updateCost",
         }),
       });
       if (response.ok) {
         const data = await response.json();
         console.log("Updated drinks:", data);
         mutate("http://localhost:3000/api/stock");
-        setQuantityDialogOpen(false);
+        setCostDialogOpen(false);
       } else {
         console.error("Failed to update drinks:", response.statusText);
       }
@@ -66,29 +66,29 @@ const UpdateQuantityDialog: React.FC<UpdateDialogProps> = ({
   return (
     <Dialog
       onOpenChange={() => onClose()}
-      open={quantityDialogOpen}
+      open={costDialogOpen}
       modal
-      defaultOpen={quantityDialogOpen}
+      defaultOpen={costDialogOpen}
     >
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>
-            Update <span className="text-green-800">{drink.name}</span> stock
+            Update <span className="text-green-800">{drink.name}</span> cost
           </DialogTitle>
           <DialogDescription>
-            Update stock here. Click save when you are done.
+            Update cost here. Click save when you are done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
-              Quantity
+              Cost (£)
             </Label>
             <Input
-              id="quantity"
-              placeholder="Enter new stock value..."
-              value={quantityInput}
-              onChange={(e) => handleQuantityInput(e.target.value)}
+              id="cost"
+              placeholder={drink.cost}
+              value={costInput}
+              onChange={(e) => handleCostInput(e.target.value)}
               className="col-span-3"
             />
           </div>
@@ -107,4 +107,4 @@ const UpdateQuantityDialog: React.FC<UpdateDialogProps> = ({
   );
 };
 
-export default UpdateQuantityDialog;
+export default UpdateCostDialog;

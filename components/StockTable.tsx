@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -11,22 +10,42 @@ import {
 
 import { Drink } from "@/interfaces/Drink";
 import { Button } from "./ui/Button";
-import UpdateDialog from "./UpdateQuantityDialog";
 import { UpdateIcon } from "@radix-ui/react-icons";
+import UpdateQuantityDialog from "./UpdateQuantityDialog";
+import UpdatePriceDialog from "./UpdatePriceDialog";
+import UpdateCostDialog from "./UpdateCostDialog";
 
 interface DrinksProps {
   drinks: Drink[];
 }
 
 const StockTable: React.FC<DrinksProps> = ({ drinks }) => {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [quantityDialogOpen, setQuantityDialogOpen] = useState(false);
+  const [costDialogOpen, setCostDialogOpen] = useState(false);
+  const [priceDialogOpen, setPriceDialogOpen] = useState(false);
   const [currentDrink, setCurrentDrink] = useState<Drink | null>(null);
 
-  const handleUpdate = (drinkId: number) => {
+  const handleQuantityUpdate = (drinkId: number) => {
     const drinkToUpdate = drinks.find((drink) => drink.drinks_id === drinkId);
     if (drinkToUpdate) {
       setCurrentDrink(drinkToUpdate);
-      setDialogOpen(true);
+      setQuantityDialogOpen(true);
+    }
+  };
+
+  const handleCostUpdate = (drinkId: number) => {
+    const drinkToUpdate = drinks.find((drink) => drink.drinks_id === drinkId);
+    if (drinkToUpdate) {
+      setCurrentDrink(drinkToUpdate);
+      setCostDialogOpen(true);
+    }
+  };
+
+  const handlePriceUpdate = (drinkId: number) => {
+    const drinkToUpdate = drinks.find((drink) => drink.drinks_id === drinkId);
+    if (drinkToUpdate) {
+      setCurrentDrink(drinkToUpdate);
+      setPriceDialogOpen(true);
     }
   };
 
@@ -54,22 +73,56 @@ const StockTable: React.FC<DrinksProps> = ({ drinks }) => {
                     size="icon"
                     variant="ghost"
                     className="text-green-700"
-                    onClick={() => handleUpdate(drink.drinks_id)}
+                    onClick={() => handleQuantityUpdate(drink.drinks_id)}
                   >
                     <UpdateIcon className="h-4 w-4" />
                   </Button>
                 </TableCell>
-                <TableCell>{drink.cost}</TableCell>
-                <TableCell>{drink.selling_price}</TableCell>
+                <TableCell>
+                  {drink.cost}{" "}
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="text-green-700"
+                    onClick={() => handleCostUpdate(drink.drinks_id)}
+                  >
+                    <UpdateIcon className="h-4 w-4" />
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  {drink.selling_price}{" "}
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="text-green-700"
+                    onClick={() => handlePriceUpdate(drink.drinks_id)}
+                  >
+                    <UpdateIcon className="h-4 w-4" />
+                  </Button>
+                </TableCell>
               </TableRow>
             );
           })}
         </TableBody>
       </Table>
       {currentDrink && (
-        <UpdateDialog
-          dialogOpen={dialogOpen}
-          setDialogOpen={setDialogOpen}
+        <UpdateQuantityDialog
+          quantityDialogOpen={quantityDialogOpen}
+          setQuantityDialogOpen={setQuantityDialogOpen}
+          drink={currentDrink}
+        />
+      )}
+      {currentDrink && (
+        <UpdateCostDialog
+          costDialogOpen={costDialogOpen}
+          setCostDialogOpen={setCostDialogOpen}
+          drink={currentDrink}
+        />
+      )}
+      {currentDrink && (
+        <UpdatePriceDialog
+          priceDialogOpen={priceDialogOpen}
+          setPriceDialogOpen={setPriceDialogOpen}
           drink={currentDrink}
         />
       )}

@@ -36,10 +36,44 @@ export async function updateDrinksStock(
   const updateDrinkQuery = `UPDATE drinks SET quantity = $2 WHERE drinks_id = $1 RETURNING *`;
   try {
     const data = await db.query(updateDrinkQuery, [drinkId, quantity]);
-    const updatedDrinks: Drink[] = data.rows;
-    if (updatedDrinks.length === 0) {
+    const updatedDrink: Drink[] = data.rows;
+    if (updatedDrink.length === 0) {
       return [];
-    } else return updatedDrinks;
+    } else return updatedDrink;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw error;
+  }
+}
+
+export async function updateDrinksCost(
+  drinkId: number,
+  cost: number
+): Promise<Drink[]> {
+  const updateDrinkQuery = `UPDATE drinks SET cost = $2 WHERE drinks_id = $1 RETURNING *`;
+  try {
+    const data = await db.query(updateDrinkQuery, [drinkId, cost]);
+    const updatedDrink: Drink[] = data.rows;
+    if (updatedDrink.length === 0) {
+      return [];
+    } else return updatedDrink;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw error;
+  }
+}
+
+export async function updateDrinksPrice(
+  drinkId: number,
+  price: number
+): Promise<Drink[]> {
+  const updateDrinkQuery = `UPDATE drinks SET selling_price = $2 WHERE drinks_id = $1 RETURNING *`;
+  try {
+    const data = await db.query(updateDrinkQuery, [drinkId, price]);
+    const updatedDrink: Drink[] = data.rows;
+    if (updatedDrink.length === 0) {
+      return [];
+    } else return updatedDrink;
   } catch (error) {
     console.error("Database Error:", error);
     throw error;
