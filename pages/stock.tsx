@@ -36,8 +36,9 @@ const Stock: NextPageWithLayout<{}> = () => {
   const endIndex = Math.min(startIndex + itemsPerPage, drinks.length);
 
   return (
-    <div className="w-full max-w-screen-xl">
-      <p>Welcome to the Stock Screen</p>
+    <div className="w-full max-w-screen-xl px-4">
+      <p className="text-2xl text-green-800">Bar Stock</p>
+      <p className="text-md">View, update and manage your stock here...</p>
       <div className="max-w-2xl m-auto mt-5">
         <StockTable drinks={drinks.slice(startIndex, endIndex)} />
       </div>

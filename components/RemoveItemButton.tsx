@@ -1,10 +1,10 @@
 import { useOrder } from "@/contexts/OrderContext";
 import React from "react";
 import { Button } from "./ui/Button";
-import { PlusCircledIcon } from "@radix-ui/react-icons";
 import { Drink } from "@/interfaces/Drink";
+import { Trash2 } from "lucide-react";
 
-const AddToOrderButton: React.FC<Drink> = ({
+const RemoveItemButton: React.FC<Drink> = ({
   drinks_id,
   brewery,
   type,
@@ -14,19 +14,19 @@ const AddToOrderButton: React.FC<Drink> = ({
   selling_price,
   profit_item,
 }) => {
-  const { addToOrder } = useOrder();
+  const { removeItem } = useOrder();
 
-  const handleAddToOrder = (drink: Drink) => {
-    addToOrder(drink);
+  const handleRemoveItem = (drink: Drink) => {
+    removeItem(drink);
   };
 
   return (
     <Button
       size="icon"
       variant="ghost"
-      className="text-green-800 border"
+      className="text-red-700"
       onClick={() =>
-        handleAddToOrder({
+        handleRemoveItem({
           drinks_id,
           brewery,
           type,
@@ -38,9 +38,9 @@ const AddToOrderButton: React.FC<Drink> = ({
         })
       }
     >
-      <PlusCircledIcon className="h-5 w-5" />
+      <Trash2 className="h-4 w-4" />
     </Button>
   );
 };
 
-export default AddToOrderButton;
+export default RemoveItemButton;

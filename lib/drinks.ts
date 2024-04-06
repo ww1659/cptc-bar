@@ -33,7 +33,11 @@ export async function updateDrinksStock(
   drinkId: number,
   quantity: number
 ): Promise<Drink[]> {
-  const updateDrinkQuery = `UPDATE drinks SET quantity = $2 WHERE drinks_id = $1 RETURNING *`;
+  const updateDrinkQuery = `
+  UPDATE drinks 
+  SET quantity = $2 
+  WHERE drinks_id = $1 
+  RETURNING *`;
   try {
     const data = await db.query(updateDrinkQuery, [drinkId, quantity]);
     const updatedDrink: Drink[] = data.rows;
@@ -67,7 +71,11 @@ export async function updateDrinksPrice(
   drinkId: number,
   price: number
 ): Promise<Drink[]> {
-  const updateDrinkQuery = `UPDATE drinks SET selling_price = $2 WHERE drinks_id = $1 RETURNING *`;
+  const updateDrinkQuery = `
+  UPDATE drinks 
+  SET selling_price = $2 
+  WHERE drinks_id = $1 
+  RETURNING *`;
   try {
     const data = await db.query(updateDrinkQuery, [drinkId, price]);
     const updatedDrink: Drink[] = data.rows;

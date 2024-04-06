@@ -2,7 +2,6 @@ import React from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -11,6 +10,12 @@ import {
 import { useOrder } from "@/contexts/OrderContext";
 import AddToOrderButton from "./AddToOrderButton";
 import TakeFromOrderButton from "./TakeFromOrderButton";
+import RemoveItemButton from "./RemoveItemButton";
+
+const formatItemPrice = (quantity: number, price: string) => {
+  const total = Math.round(quantity * Number(price) * 100) / 100;
+  return total.toFixed(2);
+};
 
 const OrderTable: React.FC<{}> = () => {
   const { order } = useOrder();
@@ -20,37 +25,61 @@ const OrderTable: React.FC<{}> = () => {
     <Table>
       <TableHeader>
         <TableRow>
+          <TableHead className="text-left"></TableHead>
           <TableHead>Drink</TableHead>
           <TableHead>Quantity</TableHead>
-          <TableHead className="text-right">Price (£)</TableHead>
+          <TableHead>Price (£)</TableHead>
+          <TableHead className="text-right">Update Order</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {items.map((item) => {
           return (
             <TableRow key={item.drink.drinks_id}>
-              <TableCell>{item.drink.name}</TableCell>
               <TableCell>
-                {item.quantityOrdered}
+                <RemoveItemButton
+                  drinks_id={item.drink.drinks_id}
+                  brewery={item.drink.brewery}
+                  type={item.drink.type}
+                  name={item.drink.name}
+                  quantity={item.drink.quantity}
+                  cost={item.drink.cost}
+                  selling_price={item.drink.selling_price}
+                  profit_item={item.drink.profit_item}
+                />
+              </TableCell>
+              <TableCell className="text-green-800 font-bold">
+                {item.drink.name}
+              </TableCell>
+              <TableCell>{item.quantityOrdered}</TableCell>
+              <TableCell>
+                {formatItemPrice(
+                  item.quantityOrdered,
+                  item.drink.selling_price
+                )}
+              </TableCell>
+              <TableCell className="text-right">
+                <TakeFromOrderButton
+                  drinks_id={item.drink.drinks_id}
+                  brewery={item.drink.brewery}
+                  type={item.drink.type}
+                  name={item.drink.name}
+                  quantity={item.drink.quantity}
+                  cost={item.drink.cost}
+                  selling_price={item.drink.selling_price}
+                  profit_item={item.drink.profit_item}
+                />
                 {"  "}
                 <AddToOrderButton
                   drinks_id={item.drink.drinks_id}
+                  brewery={item.drink.brewery}
                   type={item.drink.type}
                   name={item.drink.name}
+                  quantity={item.drink.quantity}
+                  cost={item.drink.cost}
                   selling_price={item.drink.selling_price}
+                  profit_item={item.drink.profit_item}
                 />
-                {"  "}
-                <TakeFromOrderButton
-                  drinks_id={item.drink.drinks_id}
-                  type={item.drink.type}
-                  name={item.drink.name}
-                  selling_price={item.drink.selling_price}
-                />
-              </TableCell>
-              <TableCell className="text-right">
-                {Math.round(
-                  item.quantityOrdered * Number(item.drink.selling_price) * 100
-                ) / 100}
               </TableCell>
             </TableRow>
           );

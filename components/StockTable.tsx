@@ -14,6 +14,7 @@ import { UpdateIcon } from "@radix-ui/react-icons";
 import UpdateQuantityDialog from "./UpdateQuantityDialog";
 import UpdatePriceDialog from "./UpdatePriceDialog";
 import UpdateCostDialog from "./UpdateCostDialog";
+import { formatAsCurrency, formatName } from "@/utils/helperFunctions";
 
 interface DrinksProps {
   drinks: Drink[];
@@ -53,9 +54,8 @@ const StockTable: React.FC<DrinksProps> = ({ drinks }) => {
     <div>
       <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead>Drink No.</TableHead>
-            <TableHead>Name</TableHead>
+          <TableRow className="font-bold">
+            <TableHead>Drink</TableHead>
             <TableHead>Quantity</TableHead>
             <TableHead>Cost (£)</TableHead>
             <TableHead>Selling Price (£)</TableHead>
@@ -65,40 +65,48 @@ const StockTable: React.FC<DrinksProps> = ({ drinks }) => {
           {drinks.map((drink) => {
             return (
               <TableRow key={drink.drinks_id}>
-                <TableCell>{drink.drinks_id}</TableCell>
-                <TableCell>{drink.name}</TableCell>
+                <TableCell className="text-green-800 font-bold">
+                  <div className="flex flex-col">
+                    <div className="flex">
+                      <span className="text-black text-xs font-normal">
+                        {drink.brewery ? formatName(drink.brewery) : null}
+                      </span>
+                    </div>
+                    <div className="flex"> {drink.name}</div>
+                  </div>
+                </TableCell>
                 <TableCell>
-                  {drink.quantity}{" "}
                   <Button
                     size="icon"
                     variant="ghost"
-                    className="text-green-700"
+                    className="text-green-800 border"
                     onClick={() => handleQuantityUpdate(drink.drinks_id)}
                   >
                     <UpdateIcon className="h-4 w-4" />
-                  </Button>
+                  </Button>{" "}
+                  {drink.quantity}
                 </TableCell>
                 <TableCell>
-                  {drink.cost}{" "}
                   <Button
                     size="icon"
                     variant="ghost"
-                    className="text-green-700"
+                    className="text-green-800 border"
                     onClick={() => handleCostUpdate(drink.drinks_id)}
                   >
                     <UpdateIcon className="h-4 w-4" />
-                  </Button>
+                  </Button>{" "}
+                  {formatAsCurrency(drink.cost)}
                 </TableCell>
                 <TableCell>
-                  {drink.selling_price}{" "}
                   <Button
                     size="icon"
                     variant="ghost"
-                    className="text-green-700"
+                    className="text-green-800 border"
                     onClick={() => handlePriceUpdate(drink.drinks_id)}
                   >
                     <UpdateIcon className="h-4 w-4" />
-                  </Button>
+                  </Button>{" "}
+                  {formatAsCurrency(drink.selling_price)}
                 </TableCell>
               </TableRow>
             );

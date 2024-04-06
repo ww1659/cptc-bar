@@ -9,15 +9,8 @@ export interface Drink {
   profit_item: string;
 }
 
-export interface DrinkOrder {
-  drinks_id: number;
-  type: string;
-  name: string;
-  selling_price: string;
-}
-
 export interface OrderItem {
-  drink: DrinkOrder;
+  drink: Drink;
   quantityOrdered: number;
 }
 

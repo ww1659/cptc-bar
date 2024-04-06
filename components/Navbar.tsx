@@ -11,7 +11,7 @@ const menuItems: NavItem[] = [
   { text: "Home", href: "/" },
   { text: "Sales", href: "/sales" },
   { text: "Stock", href: "/stock" },
-  { text: "Orders", href: "/order" },
+  { text: "Order", href: "/order" },
 ];
 
 export default function Navbar() {
@@ -30,7 +30,7 @@ export default function Navbar() {
             alt="CPTC Logo"
             style={{ width: "100%", height: "auto" }}
           /> */}
-          <span className="self-center text-2xl text-green-700 font-semibold whitespace-nowrap dark:text-white">
+          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
             CPTC Bar Inventory
           </span>
         </Link>

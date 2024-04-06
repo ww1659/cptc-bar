@@ -7,3 +7,24 @@ export const totalItemsOrdered = (order: OrderState) => {
 
   return totalQuantityOrdered;
 };
+
+export const formatAsCurrency = (numStr: string): string => {
+  const num = parseFloat(numStr);
+  const isInteger = Number.isInteger(num);
+
+  if (isInteger) {
+    return num.toFixed(2);
+  } else {
+    return parseFloat(num.toFixed(2)).toLocaleString("en-GB", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+};
+
+export const formatName = (name: string) => {
+  return name
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+};

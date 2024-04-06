@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "./ui/Card";
 import { useOrder } from "@/contexts/OrderContext";
-import { DrinkOrder } from "@/interfaces/Drink";
+import { Drink } from "@/interfaces/Drink";
 import TakeFromOrderButton from "./TakeFromOrderButton";
 import AddToOrderButton from "./AddToOrderButton";
 
@@ -40,24 +40,20 @@ const DrinkCard: React.FC<DrinkCardProps> = ({
   selling_price,
   profit_item,
 }) => {
-  const { order, addToOrder, takeFromOrder, clearOrder } = useOrder();
-
-  const handleAddToOrder = (drink: DrinkOrder) => {
-    addToOrder(drink);
-  };
-
-  const handleTakeFromOrder = (drink: DrinkOrder) => {
-    takeFromOrder(drink);
-  };
-
   return (
     <div className="m-2">
-      <Card className="w-[350px] ">
+      <Card className="w-[300px] ">
         <CardHeader>
-          <CardTitle>{name}</CardTitle>
-          {quantity < 5 ? (
-            <CardDescription>Low Stock: Only {quantity} left!</CardDescription>
-          ) : null}
+          <div className="flex justify-between items-center flex-row">
+            <div>
+              <CardTitle>{name}</CardTitle>
+            </div>
+            <div>
+              <CardDescription className="text-green-800">
+                {quantity}
+              </CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <p className="text-2xl">Cost £{formatPrice(selling_price)}</p>
@@ -65,15 +61,23 @@ const DrinkCard: React.FC<DrinkCardProps> = ({
         <CardFooter className="flex justify-between">
           <TakeFromOrderButton
             drinks_id={drinks_id}
+            brewery={brewery}
             type={type}
             name={name}
+            quantity={quantity}
+            cost={cost}
             selling_price={selling_price}
+            profit_item={profit_item}
           />
           <AddToOrderButton
             drinks_id={drinks_id}
+            brewery={brewery}
             type={type}
             name={name}
+            quantity={quantity}
+            cost={cost}
             selling_price={selling_price}
+            profit_item={profit_item}
           />
         </CardFooter>
       </Card>

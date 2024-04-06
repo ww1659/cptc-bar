@@ -13,6 +13,7 @@ import { Drink } from "../../interfaces/Drink";
 import { Button } from "@/components/ui/Button";
 import { useOrder } from "@/contexts/OrderContext";
 import OrderButton from "@/components/OrderButton";
+import { ArrowLeft, MoveLeft } from "lucide-react";
 
 interface DrinksProps {
   drinks: Drink[];
@@ -61,9 +62,29 @@ const Drinks: NextPageWithLayout<DrinksProps> = ({ drinks }) => {
     clearOrder();
   };
 
+  const handleGoBack = () => {
+    router.back();
+  };
+
   return (
     <div className="w-full max-w-screen-xl">
-      <p className="text-2xl">Welcome to the {id} screen!</p>
+      <div className="flex justify-between items-center flex-row mb-5">
+        <div className="flex">
+          <Button
+            className="mx-2 border border-green-800"
+            onClick={handleGoBack}
+          >
+            <ArrowLeft className="h-4 w-4 text-green-800" />
+          </Button>
+          <p className="text-2xl text-green-800 font-medium mx-2">
+            <span className="text-black">drinks/</span>
+            {id}
+          </p>
+        </div>
+        <div>
+          <OrderButton />
+        </div>
+      </div>
 
       <div className="flex justify-center flex-row flex-wrap">
         {drinks.map((drink) => (
@@ -72,9 +93,6 @@ const Drinks: NextPageWithLayout<DrinksProps> = ({ drinks }) => {
       </div>
       <div className="flex justify-center flex-row flex-wrap">
         <Button onClick={() => handleClearOrder()}>Clear Order</Button>
-      </div>
-      <div>
-        <OrderButton />
       </div>
     </div>
   );

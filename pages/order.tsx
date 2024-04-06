@@ -5,19 +5,29 @@ import Layout from "../components/Layout";
 import OrderTable from "@/components/OrderTable";
 import { useOrder } from "@/contexts/OrderContext";
 import PlaceOrderButton from "@/components/PlaceOrderButton";
+import { Input } from "@/components/ui/Input";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const formatTotal = (total: number) => {
+  return total.toFixed(2);
+};
 
 const Order: NextPageWithLayout = () => {
   const { order } = useOrder();
   const { totalPrice } = order;
 
+  console.log(order);
+
   return (
     <div className="w-full max-w-screen-xl">
-      <p>Welcome to the Orders Screen</p>
-      <div className="max-w-md mx-auto m-top-5">
+      <p className="text-2xl text-green-800">Your Order</p>
+      <p className="text-md">View and manage your order</p>
+      <div className="max-w-xl mx-auto mt-5">
         <OrderTable />
-        <div className="m-3 text-right">Total: £{totalPrice}</div>
+        <div className="flex flex-row mr-4 my-4 justify-end">
+          <p className="text-xl">£{formatTotal(totalPrice)}</p>
+        </div>
         <div>
           <PlaceOrderButton />
         </div>

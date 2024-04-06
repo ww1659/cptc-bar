@@ -4,6 +4,7 @@ import { totalItemsOrdered } from "@/utils/helperFunctions";
 import { useRouter } from "next/router";
 import { useOrder } from "@/contexts/OrderContext";
 import { DrinkOrder } from "@/interfaces/Drink";
+import { Beer } from "lucide-react";
 
 const OrderButton: React.FC<{}> = () => {
   const router = useRouter();
@@ -14,10 +15,12 @@ const OrderButton: React.FC<{}> = () => {
   };
 
   return (
-    <Button onClick={handleClick}>
-      <PlusCircledIcon className="h-5 w-5" />
-      <p>Cart</p>
-      <p>{totalItemsOrdered(order)}</p>
+    <Button className="border border-green-800" onClick={handleClick}>
+      <div className="flex flex-row">
+        <Beer className="h-5 w-5 mx-1 text-green-800" />
+        <p className="mx-1 text-green-800">Cart</p>
+        <p className="mx-1 text-green-800">{totalItemsOrdered(order) | 0}</p>
+      </div>
     </Button>
   );
 };

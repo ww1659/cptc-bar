@@ -1,9 +1,9 @@
 // src/context/state.js
 import { createContext, useState, useContext, FC, ReactNode } from "react";
-import { DrinkOrder } from "@/interfaces/Drink";
+import { Drink } from "@/interfaces/Drink";
 
 interface OrderItem {
-  drink: DrinkOrder;
+  drink: Drink;
   quantityOrdered: number;
 }
 
@@ -14,9 +14,10 @@ interface OrderState {
 
 interface IOrderContext {
   order: OrderState;
-  addToOrder: (drink: DrinkOrder) => void;
-  takeFromOrder: (drink: DrinkOrder) => void;
+  addToOrder: (drink: Drink) => void;
+  takeFromOrder: (drink: Drink) => void;
   clearOrder: () => void;
+  removeItem: (drink: Drink) => void;
 }
 
 const OrderContext = createContext<IOrderContext>({
@@ -24,12 +25,15 @@ const OrderContext = createContext<IOrderContext>({
   addToOrder: () => {},
   takeFromOrder: () => {},
   clearOrder: () => {},
+  removeItem: () => {},
 });
 
 const OrderProvider: FC<{ children?: ReactNode }> = ({ children }) => {
   const [order, setOrder] = useState<OrderState>({ items: [], totalPrice: 0 });
 
-  const addToOrder = (drink: DrinkOrder) => {
+  const addToOrder = (drink: Drink) => {
+    console.log(drink, "ADD TO ORDER");
+
     setOrder((currentOrder) => {
       const existingItemIndex = currentOrder.items.findIndex(
         (item) => item.drink.drinks_id === drink.drinks_id
@@ -55,7 +59,7 @@ const OrderProvider: FC<{ children?: ReactNode }> = ({ children }) => {
     });
   };
 
-  const takeFromOrder = (drink: DrinkOrder) => {
+  const takeFromOrder = (drink: Drink) => {
     setOrder((currentOrder) => {
       const existingItemIndex = currentOrder.items.findIndex(
         (item) => item.drink.drinks_id === drink.drinks_id
@@ -92,6 +96,26 @@ const OrderProvider: FC<{ children?: ReactNode }> = ({ children }) => {
     setOrder({ items: [], totalPrice: 0 });
   };
 
+  const removeItem = (drink: Drink) => {
+    setOrder((currentOrder) => {
+      const updatedItems = currentOrder.items.filter(
+        (item) => item.drink.drinks_id !== drink.drinks_id
+      );
+
+      const totalPrice = updatedItems.reduce(
+        (total, item) =>
+          total + Number(item.drink.selling_price) * item.quantityOrdered,
+        0
+      );
+      const totalPriceFormatted = Math.round(totalPrice * 100) / 100;
+
+      return {
+        items: updatedItems,
+        totalPrice: totalPriceFormatted,
+      };
+    });
+  };
+
   const totalItems = () => {
     return null;
   };
@@ -103,6 +127,7 @@ const OrderProvider: FC<{ children?: ReactNode }> = ({ children }) => {
         addToOrder,
         takeFromOrder,
         clearOrder,
+        removeItem,
       }}
     >
       {children}

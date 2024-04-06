@@ -36,7 +36,7 @@ const UpdateCostDialog: React.FC<UpdateDialogProps> = ({
   };
 
   const handleSaveClick = async (drink: Drink) => {
-    const costInt = parseInt(costInput, 10);
+    const costInt = parseFloat(costInput);
 
     try {
       const response = await fetch(`http://localhost:3000/api/stock`, {

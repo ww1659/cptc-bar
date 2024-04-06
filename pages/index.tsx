@@ -28,14 +28,14 @@ const Page: NextPageWithLayout = () => {
 
   return (
     <div className="w-full max-w-screen-xl">
-      <p className="text-2xl">Welcome!</p>
-      <div className="flex justify-center flex-row flex-wrap">
+      <div className="flex justify-between items-center flex-row">
+        <p className="text-2xl text-green-800">Build Order</p>
+        <OrderButton />
+      </div>
+      <div className="flex justify-center flex-row flex-wrap my-5">
         {drinks.map((drink) => (
           <DrinkBlock key={drink.title} {...drink} />
         ))}
-      </div>
-      <div>
-        <OrderButton />
       </div>
     </div>
   );
