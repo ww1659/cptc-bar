@@ -29,10 +29,8 @@ interface SalesProps {
 //   };
 // }
 
-const Sales: NextPageWithLayout<SalesProps> = () => {
+const Sales: NextPageWithLayout<SalesProps> = async () => {
   const [sales, setSales] = useState<Sale[]>([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchSales = async () => {
@@ -42,7 +40,6 @@ const Sales: NextPageWithLayout<SalesProps> = () => {
         });
         const sales: Sale[] = await response.json();
         setSales(sales);
-        setLoading(false);
       } catch (error) {
         console.error("error fetching sales data:", error);
       }
@@ -50,6 +47,8 @@ const Sales: NextPageWithLayout<SalesProps> = () => {
 
     fetchSales();
   }, []);
+
+  const [page, setPage] = useState(1);
 
   const itemsPerPage = 10;
   const totalPages = Math.ceil(sales.length / itemsPerPage);
@@ -61,13 +60,7 @@ const Sales: NextPageWithLayout<SalesProps> = () => {
       <p className="text-2xl text-green-800">Sales</p>
       <p className="text-md">View and export sales here</p>
       <div className="max-w-2xl mx-auto mt-5">
-        {loading ? (
-          <>
-            <p>Loading Skeleton</p>
-          </>
-        ) : (
-          <SalesTable sales={sales.slice(startIndex, endIndex)} />
-        )}
+        <SalesTable sales={sales.slice(startIndex, endIndex)} />
       </div>
       <div className="max-w-2xl m-auto mt-5 text-secondary ">
         <SalesPagination

@@ -42,14 +42,11 @@ export async function getStaticPaths() {
 export async function getStaticProps(context: { params: { id: string } }) {
   const { id } = context.params;
 
-  const response = await fetch(
-    process.env.URL
-      ? process.env.URL + `/api/drinks/${id}`
-      : `/api/drinks/${id}`,
-    {
-      method: "GET",
-    }
-  );
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  const response = await fetch(`${baseUrl}/api/drinks/${id}`, {
+    method: "GET",
+  });
   const drinks: Drink[] = await response.json();
 
   return {
