@@ -1,20 +1,23 @@
 export interface Sale {
-  sale_id: any;
+  saleId: number;
   salespersonId: number;
-  totalPrice: number;
+  totalPrice: string;
   totalQuantity: number;
-  totalProfit: number;
+  totalProfit: string;
   paid: boolean;
   paymentMethod: string;
-  discount: number;
+  discount: string;
   notes: string;
   createdAt: Date;
+  saleItems: SaleItem[];
 }
 
 export interface SaleItem {
+  saleItemId: number;
+  saleId: number;
   drinkId: number;
   quantity: number;
   name: string;
-  price: number;
-  profit: number;
+  price: string;
+  profit: string;
 }

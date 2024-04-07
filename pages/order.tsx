@@ -5,7 +5,6 @@ import Layout from "../components/Layout";
 import OrderTable from "@/components/OrderTable";
 import { useOrder } from "@/contexts/OrderContext";
 import PlaceOrderButton from "@/components/PlaceOrderButton";
-import { Input } from "@/components/ui/Input";
 
 const inter = Inter({ subsets: ["latin"] });
 

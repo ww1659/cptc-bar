@@ -1,4 +1,4 @@
-import { DrinkOrder, OrderItem, OrderState } from "@/interfaces/Drink";
+import { OrderState } from "@/interfaces/Drink";
 
 export const totalItemsOrdered = (order: OrderState) => {
   const totalQuantityOrdered = order.items.reduce((total, item) => {
@@ -27,4 +27,14 @@ export const formatName = (name: string) => {
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ");
+};
+
+export const formatDate = (dateString: any) => {
+  const date = new Date(dateString);
+  const day = date.getUTCDate().toString().padStart(2, "0");
+  const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
+  const year = date.getUTCFullYear().toString().slice(-2);
+  const hours = date.getUTCHours().toString().padStart(2, "0");
+  const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+  return { date: `${day}-${month}-${year}`, time: `${hours}:${minutes}` };
 };
