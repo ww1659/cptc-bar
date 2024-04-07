@@ -39,7 +39,7 @@ const UpdateCostDialog: React.FC<UpdateDialogProps> = ({
     const costInt = parseFloat(costInput);
 
     try {
-      const response = await fetch(`http://localhost:3000/api/stock`, {
+      const response = await fetch("/api/stock", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,7 +53,7 @@ const UpdateCostDialog: React.FC<UpdateDialogProps> = ({
       if (response.ok) {
         const data = await response.json();
         console.log("Updated drinks:", data);
-        mutate("http://localhost:3000/api/stock");
+        mutate("/api/stock");
         setCostDialogOpen(false);
       } else {
         console.error("Failed to update drinks:", response.statusText);

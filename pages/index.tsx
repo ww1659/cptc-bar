@@ -1,9 +1,7 @@
 import type { ReactElement } from "react";
 import type { NextPageWithLayout } from "./_app";
-import { Inter } from "next/font/google";
 import Layout from "../components/Layout";
 import DrinkBlock from "../components/DrinkBlock";
-import { useOrder } from "@/contexts/OrderContext";
 import OrderButton from "@/components/OrderButton";
 
 const drinks = [
@@ -19,13 +17,7 @@ const drinks = [
   { title: "Soft Drinks", href: "/drinks" },
 ];
 
-const inter = Inter({ subsets: ["latin"] });
-
 const Page: NextPageWithLayout = () => {
-  const { order, addToOrder, clearOrder } = useOrder();
-
-  console.log(process.env.URL, "process ENV's");
-
   return (
     <div className="w-full max-w-screen-xl">
       <div className="flex justify-between items-center flex-row">

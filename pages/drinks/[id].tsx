@@ -3,6 +3,7 @@ import type { NextPageWithLayout } from ".././_app";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 import { useRouter } from "next/router";
+import useSWR from "swr";
 
 //components
 import Layout from "../../components/Layout";
@@ -13,54 +14,64 @@ import { Drink } from "../../interfaces/Drink";
 import { Button } from "@/components/ui/Button";
 import { useOrder } from "@/contexts/OrderContext";
 import OrderButton from "@/components/OrderButton";
-import { ArrowLeft, MoveLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 interface DrinksProps {
   drinks: Drink[];
 }
 
-export async function getStaticPaths() {
-  const types = [
-    "goodchemistry",
-    "wiper&true",
-    "lager",
-    "bitter",
-    "ale",
-    "cider",
-    "wine",
-    "spirits",
-    "lowtono",
-    "softdrinks",
-  ];
+const drinksFetcher = async (url: string) => {
+  const response = await fetch(url);
+  return response.json();
+};
 
-  return {
-    paths: types.map((category) => ({ params: { id: category } })),
-    fallback: "blocking",
-  };
-}
+// export async function getStaticPaths() {
+//   const types = [
+//     "goodchemistry",
+//     "wiper&true",
+//     "lager",
+//     "bitter",
+//     "ale",
+//     "cider",
+//     "wine",
+//     "spirits",
+//     "lowtono",
+//     "softdrinks",
+//   ];
 
-export async function getStaticProps(context: { params: { id: string } }) {
-  const { id } = context.params;
+//   return {
+//     paths: types.map((category) => ({ params: { id: category } })),
+//     fallback: "blocking",
+//   };
+// }
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+// export async function getStaticProps(context: { params: { id: string } }) {
+//   const { id } = context.params;
 
-  const response = await fetch(`${baseUrl}/api/drinks/${id}`, {
-    method: "GET",
-  });
-  const drinks: Drink[] = await response.json();
+//   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  return {
-    props: {
-      drinks,
-    },
-    revalidate: 60,
-  };
-}
+//   const response = await fetch(`${baseUrl}/api/drinks/${id}`, {
+//     method: "GET",
+//   });
+//   const drinks: Drink[] = await response.json();
 
-const Drinks: NextPageWithLayout<DrinksProps> = ({ drinks }) => {
+//   return {
+//     props: {
+//       drinks,
+//     },
+//     revalidate: 60,
+//   };
+// }
+
+const Drinks: NextPageWithLayout<DrinksProps> = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { order, addToOrder, clearOrder } = useOrder();
+  const { clearOrder } = useOrder();
+  const {
+    data: drinks,
+    error,
+    isLoading,
+  } = useSWR(`/api/drinks/${id}`, drinksFetcher);
 
   const handleClearOrder = () => {
     clearOrder();
@@ -89,12 +100,14 @@ const Drinks: NextPageWithLayout<DrinksProps> = ({ drinks }) => {
           <OrderButton />
         </div>
       </div>
+      {drinks ? (
+        <div className="flex justify-center flex-row flex-wrap">
+          {drinks.map((drink: Drink) => (
+            <DrinkCard key={drink.drinks_id} {...drink} />
+          ))}
+        </div>
+      ) : null}
 
-      <div className="flex justify-center flex-row flex-wrap">
-        {drinks.map((drink) => (
-          <DrinkCard key={drink.drinks_id} {...drink} />
-        ))}
-      </div>
       <div className="flex justify-center flex-row flex-wrap">
         <Button onClick={() => handleClearOrder()}>Clear Order</Button>
       </div>
