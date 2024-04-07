@@ -3,7 +3,6 @@ import { Button } from "./ui/Button";
 import { totalItemsOrdered } from "@/utils/helperFunctions";
 import { useRouter } from "next/router";
 import { useOrder } from "@/contexts/OrderContext";
-import { DrinkOrder } from "@/interfaces/Drink";
 import { Beer } from "lucide-react";
 
 const OrderButton: React.FC<{}> = () => {
