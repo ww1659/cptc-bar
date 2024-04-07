@@ -19,11 +19,7 @@ const stockFetcher = async (url: string) => {
 };
 
 const Stock: NextPageWithLayout<{}> = () => {
-  const {
-    data: drinks,
-    error,
-    isLoading,
-  } = useSWR("http://localhost:3000/api/stock", stockFetcher);
+  const { data: drinks, error, isLoading } = useSWR("/api/stock", stockFetcher);
 
   const [page, setPage] = useState(1);
 

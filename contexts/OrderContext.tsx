@@ -32,8 +32,6 @@ const OrderProvider: FC<{ children?: ReactNode }> = ({ children }) => {
   const [order, setOrder] = useState<OrderState>({ items: [], totalPrice: 0 });
 
   const addToOrder = (drink: Drink) => {
-    console.log(drink, "ADD TO ORDER");
-
     setOrder((currentOrder) => {
       const existingItemIndex = currentOrder.items.findIndex(
         (item) => item.drink.drinks_id === drink.drinks_id

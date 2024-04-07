@@ -31,10 +31,19 @@ export const formatName = (name: string) => {
 
 export const formatDate = (dateString: any) => {
   const date = new Date(dateString);
-  const day = date.getUTCDate().toString().padStart(2, "0");
-  const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
-  const year = date.getUTCFullYear().toString().slice(-2);
-  const hours = date.getUTCHours().toString().padStart(2, "0");
-  const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+  const utcDate = new Date(
+    Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes()
+    )
+  );
+  const day = utcDate.getUTCDate().toString().padStart(2, "0");
+  const month = (utcDate.getUTCMonth() + 1).toString().padStart(2, "0");
+  const year = utcDate.getUTCFullYear().toString().slice(-2);
+  const hours = utcDate.getUTCHours().toString().padStart(2, "0");
+  const minutes = utcDate.getUTCMinutes().toString().padStart(2, "0");
   return { date: `${day}-${month}-${year}`, time: `${hours}:${minutes}` };
 };

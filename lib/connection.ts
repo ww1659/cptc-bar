@@ -5,7 +5,7 @@ interface Config {
   max?: number;
 }
 
-const ENV = process.env.NODE_ENV || "development";
+const ENV = "production";
 const config: Config = {};
 
 require("dotenv").config({
