@@ -24,7 +24,7 @@ const inter = Inter({ subsets: ["latin"] });
 const Page: NextPageWithLayout = () => {
   const { order, addToOrder, clearOrder } = useOrder();
 
-  console.log(order, "current ORDER");
+  console.log(process.env.URL, "process ENV's");
 
   return (
     <div className="w-full max-w-screen-xl">

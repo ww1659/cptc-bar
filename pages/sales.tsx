@@ -13,7 +13,10 @@ interface SalesProps {
 }
 
 export async function getStaticProps() {
-  const response = await fetch(process.env.URL + "/api/sales");
+  const response = await fetch(process.env.URL + "/api/sales", {
+    method: "GET",
+  });
+
   const sales: Sale[] = await response.json();
 
   return {

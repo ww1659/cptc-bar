@@ -42,7 +42,9 @@ export async function getStaticPaths() {
 export async function getStaticProps(context: { params: { id: string } }) {
   const { id } = context.params;
 
-  const response = await fetch(process.env.URL + `/api/drinks/${id}`);
+  const response = await fetch(process.env.URL + `/api/drinks/${id}`, {
+    method: "GET",
+  });
   const drinks: Drink[] = await response.json();
 
   return {
