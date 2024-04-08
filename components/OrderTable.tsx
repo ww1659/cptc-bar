@@ -11,15 +11,20 @@ import { useOrder } from "@/contexts/OrderContext";
 import AddToOrderButton from "./AddToOrderButton";
 import TakeFromOrderButton from "./TakeFromOrderButton";
 import RemoveItemButton from "./RemoveItemButton";
+import { formatAsCurrency } from "@/utils/helperFunctions";
 
 const formatItemPrice = (quantity: number, price: string) => {
   const total = Math.round(quantity * Number(price) * 100) / 100;
   return total.toFixed(2);
 };
 
-const OrderTable: React.FC<{}> = () => {
+const formatTotal = (total: number) => {
+  return total.toFixed(2);
+};
+
+const OrderTable: React.FC<{ discount: string }> = ({ discount }) => {
   const { order } = useOrder();
-  const { items, totalPrice } = order;
+  const { items } = order;
 
   return (
     <Table>
@@ -34,6 +39,14 @@ const OrderTable: React.FC<{}> = () => {
       </TableHeader>
       <TableBody>
         {items.map((item) => {
+          const itemPrice = formatItemPrice(
+            item.quantityOrdered,
+            item.drink.selling_price
+          );
+
+          const discountedItemPrice =
+            Number(itemPrice) * ((100 - Number(discount)) / 100);
+
           return (
             <TableRow key={item.drink.drinks_id}>
               <TableCell>
@@ -52,10 +65,14 @@ const OrderTable: React.FC<{}> = () => {
                 {item.drink.name}
               </TableCell>
               <TableCell>{item.quantityOrdered}</TableCell>
-              <TableCell>
-                {formatItemPrice(
-                  item.quantityOrdered,
-                  item.drink.selling_price
+              <TableCell className="">
+                {discount !== "0" && discount !== "" ? (
+                  <>
+                    <p className="line-through">{itemPrice}</p>
+                    <p>{formatTotal(discountedItemPrice)}</p>{" "}
+                  </>
+                ) : (
+                  itemPrice
                 )}
               </TableCell>
               <TableCell className="text-right">

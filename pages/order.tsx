@@ -1,10 +1,11 @@
-import type { ReactElement } from "react";
+import { useState, type ReactElement } from "react";
 import type { NextPageWithLayout } from "./_app";
 import { Inter } from "next/font/google";
 import Layout from "../components/Layout";
 import OrderTable from "@/components/OrderTable";
 import { useOrder } from "@/contexts/OrderContext";
 import PlaceOrderButton from "@/components/PlaceOrderButton";
+import { DiscountSelector } from "@/components/DiscountSelector";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,20 +16,33 @@ const formatTotal = (total: number) => {
 const Order: NextPageWithLayout = () => {
   const { order } = useOrder();
   const { totalPrice } = order;
+  const [discount, setDiscount] = useState("");
 
-  console.log(order);
+  const totalWithDiscount = totalPrice * ((100 - Number(discount)) / 100);
 
   return (
     <div className="w-full max-w-screen-xl">
       <p className="text-2xl text-green-800">Your Order</p>
       <p className="text-md">View and manage your order</p>
       <div className="max-w-xl mx-auto mt-5">
-        <OrderTable />
+        <OrderTable discount={discount} />
         <div className="flex flex-row mr-4 my-4 justify-end">
-          <p className="text-xl">£{formatTotal(totalPrice)}</p>
+          {discount !== "0" && discount !== "" ? (
+            <p className="text-xl mr-3">£{formatTotal(totalWithDiscount)}</p>
+          ) : null}
+          {discount !== "0" && discount !== "" ? (
+            <p className="text-xl line-through">£{formatTotal(totalPrice)}</p>
+          ) : (
+            <p className="text-xl">£{formatTotal(totalPrice)}</p>
+          )}
         </div>
         <div>
-          <PlaceOrderButton />
+          <PlaceOrderButton discount={discount} />
+        </div>
+        <div className="flex flex-row my-4 justify-end">
+          <div>
+            <DiscountSelector value={discount} setValue={setDiscount} />
+          </div>
         </div>
       </div>
     </div>

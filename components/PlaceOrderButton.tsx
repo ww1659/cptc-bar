@@ -3,7 +3,7 @@ import { Button } from "./ui/Button";
 import { useOrder } from "@/contexts/OrderContext";
 import { OrderState } from "@/interfaces/Drink";
 
-const PlaceOrderButton: React.FC<{}> = () => {
+const PlaceOrderButton: React.FC<{ discount: string }> = ({ discount }) => {
   const { order, clearOrder } = useOrder();
 
   const handleOrderClick = async (order: OrderState) => {
@@ -30,7 +30,7 @@ const PlaceOrderButton: React.FC<{}> = () => {
             ),
             paid: true,
             paymentMethod: "card",
-            discount: 0,
+            discount: discount,
             notes: "",
           },
           items: order.items.map((item) => ({

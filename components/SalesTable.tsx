@@ -15,7 +15,7 @@ import {
 } from "@/utils/helperFunctions";
 import { Badge } from "./ui/Badge";
 import { Button } from "./ui/Button";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface SalesTableProps {
   sales: Sale[];
@@ -71,7 +71,11 @@ const SalesTable: React.FC<SalesTableProps> = ({ sales }) => {
                     className="text-green-800 border"
                     onClick={() => handleDropdownClick(sale.saleId)}
                   >
-                    <ChevronDown className="h-4 w-4" />
+                    {openSaleId ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
                   </Button>
                 </TableCell>
               </TableRow>
@@ -95,11 +99,14 @@ const SalesTable: React.FC<SalesTableProps> = ({ sales }) => {
               {openSaleId === sale.saleId && (
                 <>
                   {sale.saleItems.map((saleItem) => (
-                    <TableRow className="border-0" key={saleItem.saleItemId}>
+                    <TableRow
+                      className="border-0 py-2"
+                      key={saleItem.saleItemId}
+                    >
                       <TableCell className="text-right py-1"></TableCell>
                       <TableCell className="py-1"></TableCell>
                       <TableCell className="py-1"></TableCell>
-                      <TableCell className="text-green-800 font-bold py-1 text-xs">
+                      <TableCell className="font-bold py-1 text-xs">
                         {saleItem.name}
                       </TableCell>
                       <TableCell className="font-bold py-1 text-xs">

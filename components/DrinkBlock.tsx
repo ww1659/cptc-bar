@@ -16,7 +16,7 @@ const DrinkBlock: React.FC<DrinkBlockProps> = ({ title, href, icon }) => {
 
   return (
     <button onClick={handleClick} className="...">
-      <div className="hover:text-green-800 hover:scale-105 bg-stone-100 p-4 m-4 rounded-lg shadow-lg flex flex-col items-center justify-center gap-2 w-48 h-48 border">
+      <div className="hover:text-green-800 hover:scale-105 p-3 m-3 rounded-xl shadow-lg flex flex-col items-center justify-center gap-2 w-40 h-40 border border">
         {icon && <div className="mb-2">{icon}</div>}
         <h3 className="text-xl font-medium">{title}</h3>
       </div>

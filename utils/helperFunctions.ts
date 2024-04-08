@@ -8,8 +8,11 @@ export const totalItemsOrdered = (order: OrderState) => {
   return totalQuantityOrdered;
 };
 
-export const formatAsCurrency = (numStr: string): string => {
-  const num = parseFloat(numStr);
+export const formatAsCurrency = (numStr: string | number): string => {
+  let num;
+  if (typeof numStr === "string") {
+    num = parseFloat(numStr);
+  } else num = numStr;
   const isInteger = Number.isInteger(num);
 
   if (isInteger) {
