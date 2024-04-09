@@ -50,7 +50,10 @@ export function DataTable<TData, TValue>({
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
   const [expanded, setExpanded] = React.useState({});
-  const [selectedDate, setSelectedDate] = React.useState(null);
+  const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
+    undefined
+  );
+
   const table = useReactTable({
     data,
     columns,
@@ -88,7 +91,6 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center py-4">
         <SalesDatePicker date={selectedDate} setDate={setSelectedDate} />
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

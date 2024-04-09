@@ -9,7 +9,13 @@ import { Button } from "./ui/Button";
 import { Calendar } from "./ui/Calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/Popover";
 
-export function SalesDatePicker({ date, setDate }) {
+type SetDateFunction = React.Dispatch<React.SetStateAction<Date | undefined>>;
+interface SalesDatePickerProps {
+  date: Date | undefined;
+  setDate: SetDateFunction;
+}
+
+export function SalesDatePicker({ date, setDate }: SalesDatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
