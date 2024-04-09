@@ -47,7 +47,10 @@ const SalesTable: React.FC<SalesTableProps> = ({ sales }) => {
           const time = formatDate(sale.createdAt).time;
           return (
             <>
-              <TableRow key={sale.saleId}>
+              <TableRow
+                key={sale.saleId}
+                className={openSaleId === sale.saleId ? "border-black" : ""}
+              >
                 <TableCell className="text-left">
                   {sale.paid ? (
                     <Badge className="text-green-800" variant="outline">
@@ -63,7 +66,14 @@ const SalesTable: React.FC<SalesTableProps> = ({ sales }) => {
                 <TableCell>{time}</TableCell>
                 <TableCell>{formatName(sale.paymentMethod)}</TableCell>
                 <TableCell>{sale.totalQuantity}</TableCell>
-                <TableCell>{formatAsCurrency(sale.totalPrice)}</TableCell>
+                <TableCell>
+                  <p className="font-bold">
+                    {formatAsCurrency(sale.totalPrice)}
+                  </p>
+                  {sale.discount !== "0" ? (
+                    <p className="text-xs text-green-800">-{sale.discount}%</p>
+                  ) : null}
+                </TableCell>
                 <TableCell className="text-right">
                   <Button
                     size="icon"
@@ -81,7 +91,7 @@ const SalesTable: React.FC<SalesTableProps> = ({ sales }) => {
               </TableRow>
               {openSaleId === sale.saleId && (
                 <TableRow className="border-0">
-                  <TableHead className="text-left"></TableHead>
+                  <TableHead className="text-left "></TableHead>
                   <TableHead></TableHead>
                   <TableHead></TableHead>
                   <TableHead className="text-xs text-green-800 font-bold">
@@ -98,9 +108,13 @@ const SalesTable: React.FC<SalesTableProps> = ({ sales }) => {
               )}
               {openSaleId === sale.saleId && (
                 <>
-                  {sale.saleItems.map((saleItem) => (
+                  {sale.saleItems.map((saleItem, index) => (
                     <TableRow
-                      className="border-0 py-2"
+                      className={`${
+                        index === sale.saleItems.length - 1
+                          ? "border-black"
+                          : "border-0"
+                      }`}
                       key={saleItem.saleItemId}
                     >
                       <TableCell className="text-right py-1"></TableCell>
@@ -115,6 +129,7 @@ const SalesTable: React.FC<SalesTableProps> = ({ sales }) => {
                       <TableCell className="font-bold py-1 text-xs">
                         {formatAsCurrency(saleItem.price)}
                       </TableCell>
+                      <TableCell className="py-1"></TableCell>
                     </TableRow>
                   ))}
                 </>

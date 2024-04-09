@@ -7,7 +7,8 @@ const PlaceOrderButton: React.FC<{ discount: string }> = ({ discount }) => {
   const { order, clearOrder } = useOrder();
 
   const handleOrderClick = async (order: OrderState) => {
-    console.log("Order Placed", order);
+    const totalWithDiscount =
+      order.totalPrice * ((100 - Number(discount)) / 100);
 
     try {
       const response = await fetch("/api/order", {
@@ -18,7 +19,7 @@ const PlaceOrderButton: React.FC<{ discount: string }> = ({ discount }) => {
         body: JSON.stringify({
           sales: {
             salespersonId: 1,
-            totalPrice: order.totalPrice,
+            totalPrice: totalWithDiscount,
             totalQuantity: order.items.reduce(
               (acc, item) => acc + item.quantityOrdered,
               0
@@ -30,14 +31,16 @@ const PlaceOrderButton: React.FC<{ discount: string }> = ({ discount }) => {
             ),
             paid: true,
             paymentMethod: "card",
-            discount: discount,
+            discount: discount || "0",
             notes: "",
           },
           items: order.items.map((item) => ({
             drinkId: item.drink.drinks_id,
             quantity: item.quantityOrdered,
             name: item.drink.name,
-            price: item.drink.selling_price,
+            price:
+              Number(item.drink.selling_price) *
+              ((100 - Number(discount)) / 100),
             profit: item.drink.profit_item,
           })),
         }),

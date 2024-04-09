@@ -1,80 +1,41 @@
-import { useState, type ReactElement, useEffect } from "react";
+import { useState, type ReactElement } from "react";
 import type { NextPageWithLayout } from "./_app";
-import { Inter } from "next/font/google";
 import Layout from "../components/Layout";
-import SalesTable from "@/components/SalesTable";
-import { Sale } from "@/interfaces/Sale";
-import SalesPagination from "@/components/SalesPagination";
-
-const inter = Inter({ subsets: ["latin"] });
+import { Sale, SaleItem } from "@/interfaces/Sale";
+import useSWR from "swr";
+import { DataTable } from "@/components/SalesTableV2";
+import { SalesTableColumns } from "../components/SalesTableColumns";
 
 interface SalesProps {
   sales: Sale[];
 }
 
-// export async function getStaticProps() {
-//   const response = await fetch(
-//     `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/sales`,
-//     {
-//       method: "GET",
-//     }
-//   );
-//   const sales: Sale[] = await response.json();
-
-//   return {
-//     props: {
-//       sales,
-//     },
-//     revalidate: 60,
-//   };
-// }
+const salesFetcher = async (url: string) => {
+  const response = await fetch(url);
+  return response.json();
+};
 
 const Sales: NextPageWithLayout<SalesProps> = () => {
-  const [sales, setSales] = useState<Sale[]>([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const { data: sales, error, isLoading } = useSWR("/api/sales", salesFetcher);
 
-  useEffect(() => {
-    const fetchSales = async () => {
-      try {
-        const response = await fetch("/api/sales", {
-          method: "GET",
-        });
-        const sales: Sale[] = await response.json();
-        setSales(sales);
-        setLoading(false);
-      } catch (error) {
-        console.error("error fetching sales data:", error);
-      }
-    };
-
-    fetchSales();
-  }, []);
-
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(sales.length / itemsPerPage);
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, sales.length);
+  if (error) return <div>Error loading data {error}</div>;
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="w-full max-w-screen-xl">
-      <p className="text-2xl text-green-800">Sales</p>
-      <p className="text-md">View and export sales here</p>
-      <div className="max-w-2xl mx-auto mt-5">
-        {loading ? (
+      <div className="flex flex-row max-w-2xl mx-auto items-center mb-3">
+        <p className="text-2xl text-green-800 font-medium">Drink Sales</p>
+      </div>
+      <div className="max-w-2xl mx-auto my-1 mb-10">
+        {isLoading ? (
           <>
             <p>Loading Skeleton</p>
           </>
         ) : (
-          <SalesTable sales={sales.slice(startIndex, endIndex)} />
+          <div>
+            <DataTable columns={SalesTableColumns} data={sales} />
+          </div>
         )}
-      </div>
-      <div className="max-w-2xl m-auto mt-5 text-secondary ">
-        <SalesPagination
-          page={page}
-          totalPages={totalPages}
-          setPage={setPage}
-        />
       </div>
     </div>
   );
