@@ -85,6 +85,7 @@ const OrderTable: React.FC<{ discount: string }> = ({ discount }) => {
                   cost={item.drink.cost}
                   selling_price={item.drink.selling_price}
                   profit_item={item.drink.profit_item}
+                  disabled={1}
                 />
                 {"  "}
                 <AddToOrderButton

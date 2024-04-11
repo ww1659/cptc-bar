@@ -119,7 +119,6 @@ export const SalesTableColumns: ColumnDef<Payment>[] = [
     header: () => <div className="">Discount</div>,
     cell: ({ row }) => {
       const discount: any = row.getValue("discount");
-
       if (discount !== "0") {
         return <div className="text-xs text-green-800">{discount}%</div>;
       } else {
@@ -136,30 +135,37 @@ export const SalesTableColumns: ColumnDef<Payment>[] = [
     },
   },
 
-  // {
-  //   id: "expander",
-  //   cell: ({ row }) => {
-  //     const isExpanded = row.getIsExpanded();
-  //     const toggleExpanded = (expanded: boolean) => {
-  //       row.toggleExpanded(!expanded);
-  //     };
-  //     return (
-  //       <Button
-  //         variant="ghost"
-  //         className="h-8 w-8 p-0"
-  //         onClick={() => toggleExpanded(isExpanded)}
-  //       >
-  //         <span className="sr-only">Expand Row</span>
-  //         {isExpanded ? (
-  //           <ChevronDown className="h-4 w-4" />
-  //         ) : (
-  //           <ChevronUp className="h-4 w-4" />
-  //         )}
-  //       </Button>
-  //     );
-  //   },
+  // leave this as the 7th column - need to update the way the row expands but this is the func at the moment
+  {
+    accessorKey: "saleItems",
+    header: () => null,
+    cell: () => null,
+  },
 
-  //   enableSorting: false,
-  //   enableHiding: false,
-  // },
+  {
+    id: "expander",
+    cell: ({ row }) => {
+      const isExpanded = row.getIsExpanded();
+      const toggleExpanded = (expanded: boolean) => {
+        row.toggleExpanded(!expanded);
+      };
+      return (
+        <Button
+          variant="ghost"
+          className="h-8 w-8 p-0"
+          onClick={() => toggleExpanded(isExpanded)}
+        >
+          <span className="sr-only">Expand Row</span>
+          {isExpanded ? (
+            <ChevronDown className="h-4 w-4" />
+          ) : (
+            <ChevronUp className="h-4 w-4" />
+          )}
+        </Button>
+      );
+    },
+
+    enableSorting: false,
+    enableHiding: false,
+  },
 ];

@@ -84,6 +84,7 @@ const DrinkCard: React.FC<DrinkCardProps> = ({
             cost={cost}
             selling_price={selling_price}
             profit_item={profit_item}
+            disabled={0}
           />
           <AddToOrderButton
             drinks_id={drinks_id}

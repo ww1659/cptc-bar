@@ -4,7 +4,11 @@ import { Button } from "./ui/Button";
 import { MinusCircledIcon } from "@radix-ui/react-icons";
 import { Drink } from "@/interfaces/Drink";
 
-const TakeFromOrderButton: React.FC<Drink> = ({
+interface TakeFromOrderButtonProps extends Drink {
+  disabled?: number;
+}
+
+const TakeFromOrderButton: React.FC<TakeFromOrderButtonProps> = ({
   drinks_id,
   brewery,
   type,
@@ -13,6 +17,7 @@ const TakeFromOrderButton: React.FC<Drink> = ({
   cost,
   selling_price,
   profit_item,
+  disabled,
 }) => {
   const { takeFromOrder, order } = useOrder();
 
@@ -34,7 +39,7 @@ const TakeFromOrderButton: React.FC<Drink> = ({
       size="icon"
       variant="ghost"
       className="text-green-800 border"
-      disabled={drinkQuantity < 2}
+      disabled={drinkQuantity === disabled}
       onClick={() =>
         handleTakeFromOrder({
           drinks_id,

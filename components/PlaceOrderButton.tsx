@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "./ui/Button";
 import { useOrder } from "@/contexts/OrderContext";
 import { OrderState } from "@/interfaces/Drink";
+import { useToast } from "../components/ui/UseToast";
 
 const PlaceOrderButton: React.FC<{ discount: string }> = ({ discount }) => {
   const { order, clearOrder } = useOrder();
+  const [orderProcessing, setOrderProcessing] = useState(false);
+  const { toast } = useToast();
 
   const handleOrderClick = async (order: OrderState) => {
     const totalWithDiscount =
       order.totalPrice * ((100 - Number(discount)) / 100);
 
+    if (order.items.length === 0) {
+      console.log("Cannot place order: no items in cart");
+      return;
+    }
+
     try {
+      setOrderProcessing(true);
       const response = await fetch("/api/order", {
         method: "POST",
         headers: {
@@ -48,23 +57,36 @@ const PlaceOrderButton: React.FC<{ discount: string }> = ({ discount }) => {
 
       if (!response.ok) {
         console.error("Failed to update sales and items:", response.statusText);
+        toast({
+          title: "Uh Oh!",
+          description: "Something went wrong, please try again",
+        });
+        setOrderProcessing(false);
         return;
       } else {
-        console.log("Order successfully placed!");
+        toast({
+          title: "Huzzah!",
+          description: "Your order has been successfully placed :)",
+        });
+        setOrderProcessing(false);
         clearOrder();
       }
     } catch (error) {
       console.error("Error updating drinks:", error);
+      setOrderProcessing(false);
     }
   };
 
   return (
-    <Button
-      className="w-full border border-green-800"
-      onClick={() => handleOrderClick(order)}
-    >
-      Place Order
-    </Button>
+    <div>
+      <Button
+        disabled={order.items.length === 0}
+        className="w-full border border-green-800"
+        onClick={() => handleOrderClick(order)}
+      >
+        {orderProcessing ? "Processing" : "Place Order"}
+      </Button>
+    </div>
   );
 };
 

@@ -32,6 +32,8 @@ import {
 } from "./ui/DropdownMenu";
 import { SalesDatePicker } from "./DatePicker";
 import { Input } from "./ui/Input";
+import { formatAsCurrency } from "@/utils/helperFunctions";
+import { SaleItem } from "@/interfaces/Sale";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -47,7 +49,7 @@ export function DataTable<TData, TValue>({
     []
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<VisibilityState>({ paymentMethod: false, saleItems: false });
   const [rowSelection, setRowSelection] = React.useState({});
   const [expanded, setExpanded] = React.useState({});
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
@@ -102,18 +104,21 @@ export function DataTable<TData, TValue>({
               .getAllColumns()
               .filter((column) => column.getCanHide())
               .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
+                if (column.id !== "saleItems") {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                }
+                return null;
               })}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -141,40 +146,87 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <>
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                  {/* {row.getIsExpanded() &&
-                    row.original.saleItems.map((saleItem, index) => (
+              table.getRowModel().rows.map((row, index) => {
+                const saleItems: any = row.getAllCells()[7].getValue();
+                return (
+                  <>
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                    {row.getIsExpanded() ? (
                       <TableRow
-                        className="border-0 bg-green-100"
-                        key={`${row.id}-${saleItem.saleItemId}`}
+                        key={`${row.id}-expanded-header`}
+                        className="border-0"
                       >
-                        <TableCell key={`sale-item-${saleItem.saleItemId}`}>
-                          {saleItem.name}
-                        </TableCell>
-                        <TableCell key={`sale-item-${saleItem.saleItemId}`}>
-                          {saleItem.quantity}
-                        </TableCell>
-                        <TableCell key={`sale-item-${saleItem.saleItemId}`}>
-                          {formatAsCurrency(saleItem.price)}
-                        </TableCell>
+                        {table
+                          .getVisibleFlatColumns()
+                          .map((cell, index, self) => (
+                            <TableCell
+                              key={`${row.id}-${cell.id}-header`}
+                              className={`${
+                                index === self.length - 2 ? "text-right" : ""
+                              }  py-1 text-xs font-bold`}
+                            >
+                              {index === self.length - 4
+                                ? "Drink"
+                                : index === self.length - 3
+                                ? "Quantity"
+                                : index === self.length - 2
+                                ? "Price"
+                                : null}
+                            </TableCell>
+                          ))}
                       </TableRow>
-                    ))} */}
-                </>
-              ))
+                    ) : null}
+                    {row.getIsExpanded()
+                      ? saleItems.map((saleItem: SaleItem) => (
+                          <TableRow
+                            key={`${row.id}-${saleItem.saleItemId}`}
+                            className="border-0"
+                          >
+                            {table
+                              .getVisibleFlatColumns()
+                              .map((cell, index, self) => (
+                                <TableCell
+                                  key={`${row.id}-${saleItem.saleItemId}-${cell.id}`}
+                                  className={`${
+                                    index === self.length - 2
+                                      ? "text-right"
+                                      : ""
+                                  } ${
+                                    index === self.length - 4
+                                      ? "text-green-800"
+                                      : ""
+                                  } py-1 text-xs`}
+                                >
+                                  {index === self.length - 4
+                                    ? saleItem.name
+                                    : index === self.length - 3
+                                    ? saleItem.quantity
+                                    : index === self.length - 2
+                                    ? `£${formatAsCurrency(
+                                        Number(saleItem.price) *
+                                          saleItem.quantity
+                                      )}`
+                                    : null}
+                                </TableCell>
+                              ))}
+                          </TableRow>
+                        ))
+                      : null}
+                  </>
+                );
+              })
             ) : (
               <TableRow>
                 <TableCell

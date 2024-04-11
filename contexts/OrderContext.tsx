@@ -38,15 +38,25 @@ const OrderProvider: FC<{ children?: ReactNode }> = ({ children }) => {
       );
 
       let updatedItems: OrderItem[];
+      let totalPrice = currentOrder.totalPrice;
 
       if (existingItemIndex !== -1) {
         updatedItems = [...currentOrder.items];
-        updatedItems[existingItemIndex].quantityOrdered++;
+        if (updatedItems[existingItemIndex].quantityOrdered < drink.quantity) {
+          updatedItems[existingItemIndex].quantityOrdered++;
+          totalPrice += Number(drink.selling_price);
+        } else {
+          return currentOrder;
+        }
       } else {
-        updatedItems = [...currentOrder.items, { drink, quantityOrdered: 1 }];
+        if (drink.quantity > 0) {
+          updatedItems = [...currentOrder.items, { drink, quantityOrdered: 1 }];
+          totalPrice += Number(drink.selling_price);
+        } else {
+          return currentOrder;
+        }
       }
 
-      const totalPrice = currentOrder.totalPrice + Number(drink.selling_price);
       const totalPriceFormatted = Math.round(totalPrice * 100) / 100;
 
       return {
@@ -68,12 +78,8 @@ const OrderProvider: FC<{ children?: ReactNode }> = ({ children }) => {
 
       if (existingItemIndex !== -1) {
         updatedItems = [...currentOrder.items];
-        if (updatedItems[existingItemIndex].quantityOrdered > 0) {
-          updatedItems[existingItemIndex].quantityOrdered--;
-          totalPrice = currentOrder.totalPrice - Number(drink.selling_price);
-        } else {
-          totalPrice = currentOrder.totalPrice;
-        }
+        updatedItems[existingItemIndex].quantityOrdered--;
+        totalPrice = currentOrder.totalPrice - Number(drink.selling_price);
       } else {
         updatedItems = [...currentOrder.items, { drink, quantityOrdered: 0 }];
         totalPrice = currentOrder.totalPrice;
@@ -112,10 +118,6 @@ const OrderProvider: FC<{ children?: ReactNode }> = ({ children }) => {
         totalPrice: totalPriceFormatted,
       };
     });
-  };
-
-  const totalItems = () => {
-    return null;
   };
 
   return (
