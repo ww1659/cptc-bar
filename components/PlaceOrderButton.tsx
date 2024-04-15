@@ -3,11 +3,13 @@ import { Button } from "./ui/Button";
 import { useOrder } from "@/contexts/OrderContext";
 import { OrderState } from "@/interfaces/Drink";
 import { useToast } from "../components/ui/UseToast";
+import { useRouter } from "next/router";
 
 const PlaceOrderButton: React.FC<{ discount: string }> = ({ discount }) => {
   const { order, clearOrder } = useOrder();
   const [orderProcessing, setOrderProcessing] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleOrderClick = async (order: OrderState) => {
     const totalWithDiscount =
@@ -70,6 +72,7 @@ const PlaceOrderButton: React.FC<{ discount: string }> = ({ discount }) => {
         });
         setOrderProcessing(false);
         clearOrder();
+        router.push("/");
       }
     } catch (error) {
       console.error("Error updating drinks:", error);

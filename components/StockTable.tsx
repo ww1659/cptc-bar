@@ -83,7 +83,7 @@ const StockTable: React.FC<DrinksProps> = ({ drinks }) => {
                     onClick={() => handleQuantityUpdate(drink.drinks_id)}
                   >
                     <UpdateIcon className="h-4 w-4" />
-                  </Button>{" "}
+                  </Button>
                   {drink.quantity}
                 </TableCell>
                 <TableCell>
@@ -94,7 +94,7 @@ const StockTable: React.FC<DrinksProps> = ({ drinks }) => {
                     onClick={() => handleCostUpdate(drink.drinks_id)}
                   >
                     <UpdateIcon className="h-4 w-4" />
-                  </Button>{" "}
+                  </Button>
                   {formatAsCurrency(drink.cost)}
                 </TableCell>
                 <TableCell>
@@ -105,7 +105,7 @@ const StockTable: React.FC<DrinksProps> = ({ drinks }) => {
                     onClick={() => handlePriceUpdate(drink.drinks_id)}
                   >
                     <UpdateIcon className="h-4 w-4" />
-                  </Button>{" "}
+                  </Button>
                   {formatAsCurrency(drink.selling_price)}
                 </TableCell>
               </TableRow>

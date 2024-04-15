@@ -10,7 +10,7 @@ import { Button } from "./ui/Button";
 import { Checkbox } from "./ui/CheckBox";
 import { SaleItem } from "@/interfaces/Sale";
 
-export type Payment = {
+export type SaleColumns = {
   id: string;
   paid: boolean;
   createdAt: string;
@@ -21,7 +21,7 @@ export type Payment = {
   saleItems: SaleItem[];
 };
 
-export const SalesTableColumns: ColumnDef<Payment>[] = [
+export const SalesTableColumns: ColumnDef<SaleColumns>[] = [
   {
     id: "select",
     header: ({ table }) => (

@@ -25,44 +25,6 @@ const drinksFetcher = async (url: string) => {
   return response.json();
 };
 
-// export async function getStaticPaths() {
-//   const types = [
-//     "goodchemistry",
-//     "wiper&true",
-//     "lager",
-//     "bitter",
-//     "ale",
-//     "cider",
-//     "wine",
-//     "spirits",
-//     "lowtono",
-//     "softdrinks",
-//   ];
-
-//   return {
-//     paths: types.map((category) => ({ params: { id: category } })),
-//     fallback: "blocking",
-//   };
-// }
-
-// export async function getStaticProps(context: { params: { id: string } }) {
-//   const { id } = context.params;
-
-//   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-//   const response = await fetch(`${baseUrl}/api/drinks/${id}`, {
-//     method: "GET",
-//   });
-//   const drinks: Drink[] = await response.json();
-
-//   return {
-//     props: {
-//       drinks,
-//     },
-//     revalidate: 60,
-//   };
-// }
-
 const Drinks: NextPageWithLayout<DrinksProps> = () => {
   const router = useRouter();
   const { id } = router.query;

@@ -20,8 +20,8 @@ const drinks = [
 const Page: NextPageWithLayout = () => {
   return (
     <div className="w-full max-w-screen-xl">
-      <div className="flex justify-between items-center flex-row">
-        <p className="text-2xl text-green-800">Build Order</p>
+      <div className="flex justify-between items-center flex-row mx-4 mb-3">
+        <p className="text-2xl font-medium">Build your Order</p>
         <OrderButton />
       </div>
       <div className="flex justify-center flex-row flex-wrap my-5">

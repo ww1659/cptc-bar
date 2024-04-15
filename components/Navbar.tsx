@@ -16,22 +16,24 @@ const menuItems: NavItem[] = [
 
 export default function Navbar() {
   return (
-    <nav className="bg-stone-200 border-gray-200 dark:bg-gray-900">
+    <nav className="border-b-2 border-green-800 dark:bg-gray-900">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link
           href="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          {/* <Image
-            src="/images/CPTCLOGO.png"
+          <Image
+            src="/images/cptc-logo-no-background.png"
             className="aspect-auto"
             width={100}
             height={0}
             alt="CPTC Logo"
             style={{ width: "100%", height: "auto" }}
-          /> */}
+            priority={true}
+            placeholder="empty"
+          />
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-            CPTC Bar Inventory
+            Cotham Park Bar
           </span>
         </Link>
         <div className="hidden w-full md:block md:w-auto" id="navbar-default">

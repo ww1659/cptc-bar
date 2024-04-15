@@ -1,17 +1,10 @@
 import { useState, type ReactElement } from "react";
 import type { NextPageWithLayout } from "./_app";
-import { Inter } from "next/font/google";
 import Layout from "../components/Layout";
-import { Drink } from "@/interfaces/Drink";
-import StockTable from "@/components/StockTable";
-import StockPagination from "@/components/StockPagination";
+import { StockTable } from "@/components/StockTableV2";
 import useSWR from "swr";
-
-const inter = Inter({ subsets: ["latin"] });
-
-interface DrinksProps {
-  drinks: Drink[];
-}
+import { StockTableColumns } from "@/components/StockTableColumns";
+import CreateDrinkButton from "@/components/CreateDrinkButton";
 
 const stockFetcher = async (url: string) => {
   const response = await fetch(url);
@@ -21,29 +14,30 @@ const stockFetcher = async (url: string) => {
 const Stock: NextPageWithLayout<{}> = () => {
   const { data: drinks, error, isLoading } = useSWR("/api/stock", stockFetcher);
 
-  const [page, setPage] = useState(1);
-
   if (error) return <div>Error loading data {error}</div>;
   if (isLoading) return <div>Loading...</div>;
 
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(drinks.length / itemsPerPage);
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, drinks.length);
-
   return (
     <div className="w-full max-w-screen-xl">
-      <p className="text-2xl text-green-800">Bar Stock</p>
-      <p className="text-md">View, update and manage your stock here...</p>
-      <div className="max-w-2xl m-auto mt-5">
-        <StockTable drinks={drinks.slice(startIndex, endIndex)} />
+      <div className="flex flex-row justify-between max-w-2xl mx-auto items-center mb-3">
+        <div className="flex flex-col items-start">
+          <p className="text-2xl text-green-800 font-medium">Stock</p>
+          <p className="text-md">View, update and manage your stock here...</p>
+        </div>
+        <div>
+          <CreateDrinkButton />
+        </div>
       </div>
-      <div className="max-w-xl m-auto mt-5 text-secondary ">
-        <StockPagination
-          page={page}
-          totalPages={totalPages}
-          setPage={setPage}
-        />
+      <div className="max-w-2xl m-auto my-1 mb-10">
+        {isLoading ? (
+          <>
+            <p>Loading Skeleton</p>
+          </>
+        ) : (
+          <div>
+            <StockTable columns={StockTableColumns} data={drinks} />
+          </div>
+        )}
       </div>
     </div>
   );

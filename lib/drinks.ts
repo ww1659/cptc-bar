@@ -87,3 +87,31 @@ export async function updateDrinksPrice(
     throw error;
   }
 }
+
+export async function updateDrink(
+  drinkId: number,
+  quantity: number,
+  cost: number,
+  price: number
+): Promise<Drink[]> {
+  const updateDrinkQuery = `
+    UPDATE drinks 
+    SET quantity = $2, cost = $3, selling_price = $4
+    WHERE drinks_id = $1 
+    RETURNING *`;
+  try {
+    const data = await db.query(updateDrinkQuery, [
+      drinkId,
+      quantity,
+      cost,
+      price,
+    ]);
+    const updatedDrink: Drink[] = data.rows;
+    if (updatedDrink.length === 0) {
+      return [];
+    } else return updatedDrink;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw error;
+  }
+}

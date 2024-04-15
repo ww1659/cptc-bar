@@ -23,8 +23,9 @@ const Sales: NextPageWithLayout<SalesProps> = () => {
 
   return (
     <div className="w-full max-w-screen-xl">
-      <div className="flex flex-row max-w-2xl mx-auto items-center mb-3">
-        <p className="text-2xl text-green-800 font-medium">Drink Sales</p>
+      <div className="flex flex-col max-w-2xl mx-auto items-start mb-3">
+        <p className="text-2xl text-green-800 font-medium">Sales</p>
+        <p className="text-md">Export and view previous sales</p>
       </div>
       <div className="max-w-2xl mx-auto my-1 mb-10">
         {isLoading ? (

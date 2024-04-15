@@ -22,8 +22,11 @@ const Order: NextPageWithLayout = () => {
 
   return (
     <div className="w-full max-w-screen-xl">
-      <p className="text-2xl text-green-800">Your Order</p>
-      <p className="text-md">View and manage your order</p>
+      <div className="flex flex-col max-w-2xl mx-auto items-start mb-3">
+        <p className="text-2xl text-green-800 font-medium">ORDER</p>
+        <p className="text-md">View and manage items in your order</p>
+      </div>
+
       <div className="max-w-xl mx-auto mt-5">
         <OrderTable discount={discount} />
         <div className="flex flex-row mr-4 my-4 justify-end">

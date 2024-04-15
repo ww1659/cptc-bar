@@ -11,7 +11,6 @@ import {
   CardTitle,
 } from "./ui/Card";
 import { useOrder } from "@/contexts/OrderContext";
-import { Drink } from "@/interfaces/Drink";
 import TakeFromOrderButton from "./TakeFromOrderButton";
 import AddToOrderButton from "./AddToOrderButton";
 
@@ -41,8 +40,6 @@ const DrinkCard: React.FC<DrinkCardProps> = ({
   profit_item,
 }) => {
   const { order } = useOrder();
-
-  console.log(order);
 
   const existingItemIndex = order.items.findIndex(
     (item) => item.drink.drinks_id === drinks_id

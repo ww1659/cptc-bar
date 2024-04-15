@@ -13,7 +13,6 @@ export default async function handler(
   res: NextApiResponse<DrinksResponse>
 ) {
   const { id } = req.query;
-  console.log(id, "IN APIs");
 
   try {
     const drinks = await fetchDrinksByType(id as string);
