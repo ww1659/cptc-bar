@@ -1,5 +1,6 @@
 import { db } from "./connection";
 import { Drink } from "../interfaces/Drink";
+import { NewDrink } from "@/interfaces/NewDrink";
 
 export async function fetchDrinks(): Promise<Drink[]> {
   const getDrinksQuery = `SELECT * FROM drinks ORDER BY drinks_id ASC;`;
@@ -110,6 +111,59 @@ export async function updateDrink(
     if (updatedDrink.length === 0) {
       return [];
     } else return updatedDrink;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw error;
+  }
+}
+
+export async function deleteDrink(drinkId: number): Promise<void> {
+  const deleteDrinkQuery = `
+    DELETE FROM drinks 
+    WHERE drinks_id = $1`;
+
+  try {
+    await db.query(deleteDrinkQuery, [drinkId]);
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw error;
+  }
+}
+
+export async function createDrink(
+  drinkName: string,
+  drinkQuantity: string,
+  drinkCost: string,
+  drinkPrice: string,
+  drinkType: string,
+  drinkBrewery: string,
+  drinkProfitItem: number,
+  drinkStockValue: number,
+  drinkSellingValue: number,
+  drinkInc: number
+) {
+  const createDrinkQuery = `
+    INSERT INTO drinks 
+    (name, quantity, cost, selling_price, type, brewery, profit_item, stock_value, selling_value, inc) 
+    VALUES 
+    ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) 
+    RETURNING *`;
+
+  try {
+    const data = await db.query<NewDrink>(createDrinkQuery, [
+      drinkName,
+      drinkQuantity,
+      drinkCost,
+      drinkPrice,
+      drinkType,
+      drinkBrewery,
+      drinkProfitItem,
+      drinkStockValue,
+      drinkSellingValue,
+      drinkInc,
+    ]);
+    const newDrink: NewDrink[] = data.rows;
+    return newDrink;
   } catch (error) {
     console.error("Database Error:", error);
     throw error;

@@ -7,7 +7,6 @@ const CreateDrinkButton: React.FC<{}> = () => {
   const router = useRouter();
 
   const handleClick = () => {
-    console.log("boom");
     router.push("/create-new-drink");
   };
 

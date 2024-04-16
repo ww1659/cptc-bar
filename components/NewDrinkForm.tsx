@@ -8,7 +8,6 @@ import { Button } from "./ui/Button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,23 +21,35 @@ import {
   SelectValue,
 } from "./ui/Select";
 import { Input } from "./ui/Input";
+import { useRouter } from "next/router";
+import { useToast } from "./ui/UseToast";
+
+const currencyRegex = /^\d+(\.\d{1,2})?$/;
+const quantityRegex = /^\d+$/;
 
 const formSchema = z.object({
   drinkName: z.string().min(1, {
     message: "Drink name must be at least 1 character.",
   }),
-  quantity: z.string().min(1, {
-    message: "Must be a valid number",
-  }),
-  cost: z.string().min(1, {
-    message: "Must be a valid number",
-  }),
-  sellingPrice: z.string().min(1, {
-    message: "Must be a valid number",
-  }),
-  type: z.string().min(1, {
-    message: "Must choose a type",
-  }),
+  quantity: z
+    .string()
+    .min(1, { message: "Quantity must be greater than 0." })
+    .regex(quantityRegex, {
+      message: "Must be a valid number",
+    }),
+  cost: z
+    .string()
+    .min(1, { message: "Cost must be greater than 0." })
+    .regex(currencyRegex, {
+      message: "Cost must be in valid currency format (0.00).",
+    }),
+  sellingPrice: z
+    .string()
+    .min(1, { message: "Price must be greater than 0." })
+    .regex(currencyRegex, {
+      message: "Cost must be in valid currency format (0.00).",
+    }),
+  type: z.string().min(1, { message: "Must choose a drink type." }),
 });
 
 export function NewDrinkForm() {
@@ -52,13 +63,53 @@ export function NewDrinkForm() {
       type: "",
     },
   });
+  const router = useRouter();
+  const { toast } = useToast();
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const onSubmit = async (formValues: z.infer<typeof formSchema>) => {
+    console.log(formValues);
+
+    try {
+      const response = await fetch("/api/create-new-drink", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          newDrink: {
+            drinkName: formValues.drinkName,
+            drinkType: formValues.type,
+            drinkQuantity: formValues.quantity,
+            drinkCost: formValues.cost,
+            drinkPrice: formValues.sellingPrice,
+            drinkProfitItem:
+              Number(formValues.sellingPrice) - Number(formValues.cost),
+            drinkStockValue:
+              Number(formValues.quantity) * Number(formValues.cost),
+            drinkSellingValue:
+              Number(formValues.quantity) * Number(formValues.sellingPrice),
+            drinkInc:
+              ((Number(formValues.sellingPrice) - Number(formValues.cost)) /
+                Number(formValues.cost)) *
+              100,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        console.error("Failed to update sales and items:", response.statusText);
+        return;
+      } else {
+        toast({
+          title: "Success!",
+          description: "You have created a new drink",
+        });
+        router.push("/stock");
+      }
+    } catch (error) {
+      console.error("Error updating drinks:", error);
+    }
+  };
 
   return (
     <Form {...form}>
@@ -75,71 +126,10 @@ export function NewDrinkForm() {
                 <FormItem>
                   <FormLabel className="text-md">Drink Name</FormLabel>
                   <div className="flex flex-row items-center justify-between">
-                    <FormControl className="w-1/2">
+                    <FormControl className="w-3/4">
                       <Input placeholder="Enter Drink Name" {...field} />
                     </FormControl>
-                    <FormMessage className="w-1/2 text-xs text-red-700 ml-3" />
-                  </div>
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-        <div className="flex flex-row justify-start items-center">
-          <div className="flex-1">
-            <FormField
-              control={form.control}
-              name="quantity"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-md">Stock</FormLabel>
-                  <div className="flex flex-row items-center justify-between">
-                    <FormControl className="w-1/2">
-                      <Input placeholder="Enter Drink Name" {...field} />
-                    </FormControl>
-                    <FormMessage className="w-1/2 text-xs text-red-700 ml-3" />
-                  </div>
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-        <div className="flex flex-row justify-start items-center">
-          <div className="flex-1">
-            <FormField
-              control={form.control}
-              name="cost"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-md">
-                    Drink Cost (per item)
-                  </FormLabel>
-                  <div className="flex flex-row items-center justify-between">
-                    <FormControl className="w-1/2">
-                      <Input placeholder="Enter Drink Name" {...field} />
-                    </FormControl>
-                    <FormMessage className="w-1/2 text-xs text-red-700 ml-3" />
-                  </div>
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-        <div className="flex flex-row justify-start items-center">
-          <div className="flex-1">
-            <FormField
-              control={form.control}
-              name="sellingPrice"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-md">
-                    Selling Price (per item)
-                  </FormLabel>
-                  <div className="flex flex-row items-center justify-between">
-                    <FormControl className="w-1/2">
-                      <Input placeholder="Enter Drink Name" {...field} />
-                    </FormControl>
-                    <FormMessage className="w-1/2 text-xs text-red-700 ml-3" />
+                    <FormMessage className="w-1/4 text-xs text-red-700 ml-3" />
                   </div>
                 </FormItem>
               )}
@@ -155,7 +145,7 @@ export function NewDrinkForm() {
                 <FormItem>
                   <FormLabel className="text-md">Type of Drink</FormLabel>
                   <div className="flex flex-row items-center justify-between">
-                    <div className="w-1/2">
+                    <div className="w-3/4">
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
@@ -165,29 +155,91 @@ export function NewDrinkForm() {
                             <SelectValue placeholder="Select drink type" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
-                          <SelectItem value="wiper & true">
+                        <SelectContent className="bg-white border border-green-800 shadow">
+                          <SelectItem value="wiper&true">
                             Wiper & True
                           </SelectItem>
-                          <SelectItem value="good chemistry">
+                          <SelectItem value="goodchemistry">
                             Good Chemistry
                           </SelectItem>
                           <SelectItem value="lager">Lager</SelectItem>
                           <SelectItem value="cider">Cider</SelectItem>
                           <SelectItem value="bitter">Bitter</SelectItem>
                           <SelectItem value="wine">Wine</SelectItem>
-                          <SelectItem value="soft drink">Soft Drink</SelectItem>
-                          <SelectItem value="low to no">Low-to-No</SelectItem>
+                          <SelectItem value="softdrink">Soft Drink</SelectItem>
+                          <SelectItem value="lowtono">Low-to-No</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
-                    <FormMessage className="w-1/2 text-xs text-red-700 ml-3 " />
+                    <FormMessage className="w-1/4 text-xs text-red-700 ml-3 " />
                   </div>
                 </FormItem>
               )}
             />
           </div>
         </div>
+        <div className="flex flex-row justify-start items-center">
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="quantity"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-md">Stock</FormLabel>
+                  <div className="flex flex-row items-center justify-between">
+                    <FormControl className="w-3/4">
+                      <Input placeholder="Enter number of drinks" {...field} />
+                    </FormControl>
+                    <FormMessage className="w-1/4 text-xs text-red-700 ml-3" />
+                  </div>
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+        <div className="flex flex-row justify-start items-center">
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="cost"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-md">
+                    Drink Cost (£ per item)
+                  </FormLabel>
+                  <div className="flex flex-row items-center justify-between">
+                    <FormControl className="w-3/4">
+                      <Input placeholder="e.g. 1.50" {...field} />
+                    </FormControl>
+                    <FormMessage className="w-1/4 text-xs text-red-700 ml-3" />
+                  </div>
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+        <div className="flex flex-row justify-start items-center">
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="sellingPrice"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-md">
+                    Selling Price (£ per item)
+                  </FormLabel>
+                  <div className="flex flex-row items-center justify-between">
+                    <FormControl className="w-3/4">
+                      <Input placeholder="e.g. 2.00" {...field} />
+                    </FormControl>
+                    <FormMessage className="w-1/4 text-xs text-red-700 ml-3" />
+                  </div>
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+
         <Button type="submit" className="bg-green-800 text-white">
           Create Drink Item
         </Button>

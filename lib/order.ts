@@ -1,5 +1,5 @@
 import { db } from "./connection";
-import { Sale, SaleItem } from "@/interfaces/Sale";
+import { Sale } from "@/interfaces/Sale";
 
 export async function createSaleAndItemsAndUpdateDrinks(
   salespersonId: number,

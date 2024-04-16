@@ -7,12 +7,24 @@ import {
   BeerOffIcon,
   GlassWater,
   MartiniIcon,
-  Wine,
+  MoreHorizontal,
+  Trash2Icon,
+  TrashIcon,
   WineIcon,
 } from "lucide-react";
 import { Button } from "./ui/Button";
 import { Checkbox } from "./ui/CheckBox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/DropdownMenu";
 import { UpdateDrinkDialog } from "./UpdateDrinkDialog";
+import { DeleteDrinkDialog } from "./DeleteDrinkDialog";
+import { UpdateIcon } from "@radix-ui/react-icons";
 
 export type StockTableColumnsProps = {
   id: string;
@@ -105,7 +117,7 @@ export const StockTableColumns: ColumnDef<StockTableColumnsProps>[] = [
       }
       return (
         <div className="font-medium">
-          <div>{row.getValue("name")}</div>
+          <div>{formatName(row.getValue("name"))}</div>
           {brewery !== null ? (
             <div className="text-xs text-green-800">{brewery}</div>
           ) : null}
@@ -171,19 +183,44 @@ export const StockTableColumns: ColumnDef<StockTableColumnsProps>[] = [
   {
     id: "actions",
     header: () => {
-      return <div className="text-right">Update</div>;
+      return <div className="text-right">Actions</div>;
     },
     cell: ({ row }) => {
       const drink = row.original;
       return (
         <div className="text-right">
-          <UpdateDrinkDialog
-            drinkId={drink.drinks_id}
-            drinkName={drink.name}
-            drinkQuantity={drink.quantity}
-            drinkCost={drink.cost}
-            drinkPrice={drink.selling_price}
-          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="center"
+              side="right"
+              sideOffset={30}
+              className="bg-white"
+            >
+              <div className="flex flex-col">
+                <div className="flex flex-row py-1 items-center">
+                  <UpdateDrinkDialog
+                    drinkId={drink.drinks_id}
+                    drinkName={drink.name}
+                    drinkQuantity={drink.quantity}
+                    drinkCost={drink.cost}
+                    drinkPrice={drink.selling_price}
+                  />
+                </div>
+                <div className="flex flex-row py-1 items-center">
+                  <DeleteDrinkDialog
+                    drinkId={drink.drinks_id}
+                    drinkName={drink.name}
+                  />
+                </div>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       );
     },

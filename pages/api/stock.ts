@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Drink } from "../../interfaces/Drink";
-import { fetchDrinks, updateDrink } from "../../lib/drinks";
+import { deleteDrink, fetchDrinks, updateDrink } from "../../lib/drinks";
 
 interface ErrorMessage {
   message: string;
@@ -20,8 +20,12 @@ export default async function handler(
       const { drinkId, quantity, cost, price } = req.body;
       const updatedDrink = await updateDrink(drinkId, quantity, cost, price);
       res.status(200).json(updatedDrink);
+    } else if (req.method === "DELETE") {
+      const { drinkId } = req.body;
+      await deleteDrink(drinkId);
+      res.status(200).json({ message: "Drink removed" });
     } else {
-      res.setHeader("Allow", ["GET", "PUT"]);
+      res.setHeader("Allow", ["GET", "PUT", "DELETE"]);
       res.status(405).end(`Method ${req.method} Not Allowed`);
     }
   } catch (error) {

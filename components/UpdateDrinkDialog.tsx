@@ -1,4 +1,4 @@
-import { Rat } from "lucide-react";
+import { MoreHorizontal, Rat } from "lucide-react";
 import { Button } from "./ui/Button";
 import {
   Dialog,
@@ -15,6 +15,7 @@ import { formatAsCurrency } from "@/utils/helperFunctions";
 import { useState } from "react";
 import { mutate } from "swr";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { UpdateIcon } from "@radix-ui/react-icons";
 
 interface DialogProps {
   drinkId: number;
@@ -80,9 +81,9 @@ export const UpdateDrinkDialog: React.FC<DialogProps> = ({
   return (
     <Dialog modal>
       <DialogTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 p-0 text-green-800">
-          <span className="sr-only">Open menu</span>
-          <Rat className="h-5 w-5" />
+        <Button variant="ghost" className="hover:text-green-800">
+          <UpdateIcon className="h-4 w-4 mr-2" />
+          Update
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
