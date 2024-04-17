@@ -5,6 +5,7 @@ import { StockTable } from "@/components/StockTableV2";
 import useSWR from "swr";
 import { StockTableColumns } from "@/components/StockTableColumns";
 import CreateDrinkButton from "@/components/CreateDrinkButton";
+import { useAuth } from "@clerk/nextjs";
 
 const stockFetcher = async (url: string) => {
   const response = await fetch(url);
@@ -13,6 +14,11 @@ const stockFetcher = async (url: string) => {
 
 const Stock: NextPageWithLayout<{}> = () => {
   const { data: drinks, error, isLoading } = useSWR("/api/stock", stockFetcher);
+
+  const { isLoaded, userId } = useAuth();
+  if (!isLoaded || !userId) {
+    return null;
+  }
 
   if (error) return <div>Error loading data {error}</div>;
   if (isLoading) return <div>Loading...</div>;

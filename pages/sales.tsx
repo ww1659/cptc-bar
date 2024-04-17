@@ -5,7 +5,6 @@ import { Sale } from "@/interfaces/Sale";
 import useSWR from "swr";
 import { DataTable } from "@/components/SalesTableV2";
 import { SalesTableColumns } from "../components/SalesTableColumns";
-import { useAuth } from "@clerk/nextjs";
 
 interface SalesProps {
   sales: Sale[];
@@ -18,14 +17,9 @@ const salesFetcher = async (url: string) => {
 
 const Sales: NextPageWithLayout<SalesProps> = () => {
   const { data: sales, error, isLoading } = useSWR("/api/sales", salesFetcher);
-  const { isLoaded, userId } = useAuth();
 
   if (error) return <div>Error loading data {error}</div>;
   if (isLoading) return <div>Loading...</div>;
-
-  if (!isLoaded || !userId) {
-    return null;
-  }
 
   return (
     <div className="w-full max-w-screen-xl">
