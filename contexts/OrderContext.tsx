@@ -78,7 +78,11 @@ const OrderProvider: FC<{ children?: ReactNode }> = ({ children }) => {
 
       if (existingItemIndex !== -1) {
         updatedItems = [...currentOrder.items];
-        updatedItems[existingItemIndex].quantityOrdered--;
+        if (updatedItems[existingItemIndex].quantityOrdered === 1) {
+          removeItem(drink);
+        } else {
+          updatedItems[existingItemIndex].quantityOrdered--;
+        }
         totalPrice = currentOrder.totalPrice - Number(drink.selling_price);
       } else {
         updatedItems = [...currentOrder.items, { drink, quantityOrdered: 0 }];

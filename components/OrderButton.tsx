@@ -14,11 +14,11 @@ const OrderButton: React.FC<{}> = () => {
   };
 
   return (
-    <Button className="border border-green-800" onClick={handleClick}>
+    <Button className="border border-green-800 p-2" onClick={handleClick}>
       <div className="flex flex-row">
         <Beer className="h-5 w-5 mx-1 text-green-800" />
-        <p className="mx-1 text-green-800">Cart</p>
-        <p className="mx-1 text-green-800">{totalItemsOrdered(order) | 0}</p>
+        <p className="mx-1 ">Cart</p>
+        <p className="mx-1 ">{totalItemsOrdered(order) | 0}</p>
       </div>
     </Button>
   );

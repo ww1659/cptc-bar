@@ -63,15 +63,15 @@ export const StockTableColumns: ColumnDef<StockTableColumnsProps>[] = [
   {
     accessorKey: "type",
     header: ({ column }) => {
-      // return (
-      //   <Button
-      //     variant="ghost"
-      //     className="pl-0"
-      //     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      //   >
-      //     <ArrowUpDown className="ml-2 h-4 w-4" />
-      //   </Button>
-      // );
+      return (
+        <Button
+          variant="ghost"
+          className="pl-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
     cell: ({ row }) => {
       const drinkType = row.getValue("type");
@@ -183,7 +183,7 @@ export const StockTableColumns: ColumnDef<StockTableColumnsProps>[] = [
   {
     id: "actions",
     header: () => {
-      return <div className="text-right">Actions</div>;
+      null;
     },
     cell: ({ row }) => {
       const drink = row.original;

@@ -6,6 +6,7 @@ import OrderTable from "@/components/OrderTable";
 import { useOrder } from "@/contexts/OrderContext";
 import PlaceOrderButton from "@/components/PlaceOrderButton";
 import { DiscountSelector } from "@/components/DiscountSelector";
+import { SignedIn } from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,7 +45,9 @@ const Order: NextPageWithLayout = () => {
         </div>
         <div className="flex flex-row my-4 justify-end">
           <div>
-            <DiscountSelector value={discount} setValue={setDiscount} />
+            <SignedIn>
+              <DiscountSelector value={discount} setValue={setDiscount} />
+            </SignedIn>
           </div>
         </div>
       </div>

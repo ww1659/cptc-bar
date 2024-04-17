@@ -14,7 +14,7 @@ import { Drink } from "../../interfaces/Drink";
 import { Button } from "@/components/ui/Button";
 import { useOrder } from "@/contexts/OrderContext";
 import OrderButton from "@/components/OrderButton";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Trash2Icon } from "lucide-react";
 
 interface DrinksProps {
   drinks: Drink[];
@@ -58,21 +58,26 @@ const Drinks: NextPageWithLayout<DrinksProps> = () => {
             {id}
           </p>
         </div>
-        <div>
-          <OrderButton />
+        <div className="flex flex-row">
+          {/* <div className="mr-1 ">
+            <Button className="p-2" onClick={() => handleClearOrder()}>
+              <Trash2Icon className="h-5 w-5 mx-1 text-red-700" />
+            </Button>
+          </div> */}
+          <div className="ml-1">
+            <OrderButton />
+          </div>
         </div>
       </div>
       {drinks ? (
         <div className="flex justify-center flex-row flex-wrap">
-          {drinks.map((drink: Drink) => (
-            <DrinkCard key={drink.drinks_id} {...drink} />
-          ))}
+          {drinks.map((drink: Drink) => {
+            if (drink.quantity === 0) {
+              return null;
+            } else return <DrinkCard key={drink.drinks_id} {...drink} />;
+          })}
         </div>
       ) : null}
-
-      <div className="flex justify-center flex-row flex-wrap">
-        <Button onClick={() => handleClearOrder()}>Clear Order</Button>
-      </div>
     </div>
   );
 };
