@@ -165,7 +165,7 @@ export function DataTable<TData, TValue>({
                     {row.getIsExpanded() ? (
                       <TableRow
                         key={`${row.id}-expanded-header`}
-                        className="border-0"
+                        className="border-0 bg-stone-100"
                       >
                         {table
                           .getVisibleFlatColumns()
@@ -191,7 +191,7 @@ export function DataTable<TData, TValue>({
                       ? saleItems.map((saleItem: SaleItem) => (
                           <TableRow
                             key={`${row.id}-${saleItem.saleItemId}`}
-                            className="border-0"
+                            className="border-0 bg-stone-100"
                           >
                             {table
                               .getVisibleFlatColumns()

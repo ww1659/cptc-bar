@@ -13,7 +13,7 @@ interface NavItem {
 
 const menuItems: NavItem[] = [
   { text: "Home", href: "/", protected: false },
-  { text: "Sales", href: "/sales", protected: true },
+  { text: "Sales", href: "/sales", protected: false },
   { text: "Stock", href: "/stock", protected: true },
   { text: "Order", href: "/order", protected: false },
 ];

@@ -7,10 +7,12 @@ export default authMiddleware({
   publicRoutes: [
     "/",
     "/order",
+    "/sales",
     "/sign-in",
     "/drinks/(.*)",
     "/api/drinks/(.*)",
     "/api/order",
+    "/api/sales",
   ],
 });
 

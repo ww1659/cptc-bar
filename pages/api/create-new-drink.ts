@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createDrink } from "../../lib/drinks";
 import { NewDrink } from "@/interfaces/NewDrink";
+import { getAuth } from "@clerk/nextjs/server";
 
 interface ErrorMessage {
   message: string;
@@ -12,6 +13,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<DrinksResponse>
 ) {
+  const { userId } = getAuth(req);
+  if (!userId) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
+
   if (req.method === "POST") {
     try {
       const { newDrink } = req.body;

@@ -1,7 +1,5 @@
 import * as React from "react";
-import { PlusIcon, MinusIcon } from "@radix-ui/react-icons";
 
-import { Button } from "./ui/Button";
 import {
   Card,
   CardContent,
@@ -13,6 +11,7 @@ import {
 import { useOrder } from "@/contexts/OrderContext";
 import TakeFromOrderButton from "./TakeFromOrderButton";
 import AddToOrderButton from "./AddToOrderButton";
+import { Skeleton } from "./ui/Skeleton";
 
 interface DrinkCardProps {
   drinks_id: number;
