@@ -25,7 +25,7 @@ const Stock: NextPageWithLayout<{}> = () => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-row justify-between max-w-2xl mx-auto items-center mb-3">
+      <div className="flex flex-row justify-between max-w-3xl mx-auto items-center mb-3">
         <div className="flex flex-col items-start">
           <p className="text-2xl text-green-800 font-medium">Stock</p>
           <p className="text-md">View, update and manage your stock here...</p>
@@ -34,7 +34,7 @@ const Stock: NextPageWithLayout<{}> = () => {
           <CreateDrinkButton />
         </div>
       </div>
-      <div className="max-w-2xl m-auto my-1 mb-10">
+      <div className="max-w-3xl m-auto my-1 mb-10">
         {isLoading ? (
           <>
             <p>Loading Skeleton</p>

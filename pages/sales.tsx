@@ -23,11 +23,11 @@ const Sales: NextPageWithLayout<SalesProps> = () => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col max-w-2xl mx-auto items-start mb-3">
+      <div className="flex flex-col max-w-3xl mx-auto items-start mb-3">
         <p className="text-2xl text-green-800 font-medium">Sales</p>
         <p className="text-md">Export and view previous sales</p>
       </div>
-      <div className="max-w-2xl mx-auto my-1 mb-10">
+      <div className="max-w-3xl mx-auto my-1 mb-10">
         {isLoading ? (
           <>
             <p>Loading Skeleton</p>

@@ -116,7 +116,7 @@ export const SalesTableColumns: ColumnDef<SaleColumns>[] = [
   },
   {
     accessorKey: "discount",
-    header: () => <div className="">Discount</div>,
+    header: () => <div>Discount</div>,
     cell: ({ row }) => {
       const discount: any = row.getValue("discount");
       if (discount !== "0") {

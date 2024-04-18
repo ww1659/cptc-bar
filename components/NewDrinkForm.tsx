@@ -115,7 +115,7 @@ export function NewDrinkForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 border-2 border-green-800 rounded-xl px-12 py-5"
+        className="space-y-8 border-2 border-ston-100 rounded-xl px-12 py-5"
       >
         <div className="flex flex-row justify-start items-center">
           <div className="flex-1">
@@ -126,10 +126,10 @@ export function NewDrinkForm() {
                 <FormItem>
                   <FormLabel className="text-md">Drink Name</FormLabel>
                   <div className="flex flex-row items-center justify-between">
-                    <FormControl className="w-3/4">
+                    <FormControl className="w-1/2">
                       <Input placeholder="Enter Drink Name" {...field} />
                     </FormControl>
-                    <FormMessage className="w-1/4 text-xs text-red-700 ml-3" />
+                    <FormMessage className="w-1/2 text-xs text-red-700 ml-3" />
                   </div>
                 </FormItem>
               )}
@@ -145,7 +145,7 @@ export function NewDrinkForm() {
                 <FormItem>
                   <FormLabel className="text-md">Type of Drink</FormLabel>
                   <div className="flex flex-row items-center justify-between">
-                    <div className="w-3/4">
+                    <div className="w-1/2">
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
@@ -171,7 +171,7 @@ export function NewDrinkForm() {
                         </SelectContent>
                       </Select>
                     </div>
-                    <FormMessage className="w-1/4 text-xs text-red-700 ml-3 " />
+                    <FormMessage className="w-1/2 text-xs text-red-700 ml-3 " />
                   </div>
                 </FormItem>
               )}
@@ -187,10 +187,10 @@ export function NewDrinkForm() {
                 <FormItem>
                   <FormLabel className="text-md">Stock</FormLabel>
                   <div className="flex flex-row items-center justify-between">
-                    <FormControl className="w-3/4">
+                    <FormControl className="w-1/2">
                       <Input placeholder="Enter number of drinks" {...field} />
                     </FormControl>
-                    <FormMessage className="w-1/4 text-xs text-red-700 ml-3" />
+                    <FormMessage className="w-1/2 text-xs text-red-700 ml-3" />
                   </div>
                 </FormItem>
               )}
@@ -208,10 +208,10 @@ export function NewDrinkForm() {
                     Drink Cost (£ per item)
                   </FormLabel>
                   <div className="flex flex-row items-center justify-between">
-                    <FormControl className="w-3/4">
+                    <FormControl className="w-1/2">
                       <Input placeholder="e.g. 1.50" {...field} />
                     </FormControl>
-                    <FormMessage className="w-1/4 text-xs text-red-700 ml-3" />
+                    <FormMessage className="w-1/2 text-xs text-red-700 ml-3" />
                   </div>
                 </FormItem>
               )}
@@ -229,10 +229,10 @@ export function NewDrinkForm() {
                     Selling Price (£ per item)
                   </FormLabel>
                   <div className="flex flex-row items-center justify-between">
-                    <FormControl className="w-3/4">
+                    <FormControl className="w-1/2">
                       <Input placeholder="e.g. 2.00" {...field} />
                     </FormControl>
-                    <FormMessage className="w-1/4 text-xs text-red-700 ml-3" />
+                    <FormMessage className="w-1/2 text-xs text-red-700 ml-3" />
                   </div>
                 </FormItem>
               )}

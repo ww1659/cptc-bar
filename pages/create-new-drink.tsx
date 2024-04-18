@@ -6,12 +6,10 @@ import { NewDrinkForm } from "@/components/NewDrinkForm";
 const CreateNewDrink: NextPageWithLayout = () => {
   return (
     <div className="w-full">
-      <div className="flex max-w-2xl mx-auto justify-center items-start mb-3">
-        <p className="text-2xl text-green-800 font-medium">
-          Create a New Drink Item
-        </p>
+      <div className="flex max-w-3xl mx-auto justify-start items-start mb-3">
+        <p className="text-2xl font-medium">Create a New Drink Item</p>
       </div>
-      <div className="max-w-2xl mx-auto my-1">
+      <div className="max-w-3xl mx-auto my-1">
         <NewDrinkForm />
       </div>
     </div>

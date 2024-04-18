@@ -88,6 +88,33 @@ export function DataTable<TData, TValue>({
     }
   }, [selectedDate, table]);
 
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setColumnVisibility((currentState) => ({
+          ...currentState,
+          discount: false,
+          expander: false,
+          totalQuantity: false,
+        }));
+      } else {
+        setColumnVisibility((currentState) => ({
+          ...currentState,
+          discount: true,
+          expander: true,
+          totalQuantity: true,
+        }));
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <div>
       <div className="flex items-center py-4">
