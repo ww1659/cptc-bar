@@ -8,7 +8,7 @@ const SignOutButton = () => {
 
   return (
     <Button
-      className="border border-green-800 text-green"
+      className="bg-green-800 rounded-lg text-white hover:bg-green-900"
       onClick={() => signOut(() => router.push("/"))}
     >
       Sign Out

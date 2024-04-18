@@ -24,7 +24,7 @@ const Stock: NextPageWithLayout<{}> = () => {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="w-full max-w-screen-xl">
+    <div className="w-full">
       <div className="flex flex-row justify-between max-w-2xl mx-auto items-center mb-3">
         <div className="flex flex-col items-start">
           <p className="text-2xl text-green-800 font-medium">Stock</p>

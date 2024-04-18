@@ -45,7 +45,7 @@ const Drinks: NextPageWithLayout<DrinksProps> = () => {
   };
 
   return (
-    <div className="w-full max-w-screen-xl">
+    <div className="w-full">
       <div className="flex justify-between items-center flex-row mb-5">
         <div className="flex">
           <Button

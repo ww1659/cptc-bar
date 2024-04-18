@@ -22,7 +22,9 @@ export default function Layout({ children }: PropsWithChildren) {
         }}
       >
         <Navbar />
-        <main className="h-screen flex justify-center p-4">{children}</main>
+        <main className="h-screen max-w-screen-xl mx-auto flex justify-center p-4">
+          {children}
+        </main>
         <Toaster />
       </ClerkProvider>
     </>
