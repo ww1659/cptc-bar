@@ -1,5 +1,4 @@
 export interface Sale {
-  sale_id: any;
   saleId: number;
   salespersonId: number;
   totalPrice: string;

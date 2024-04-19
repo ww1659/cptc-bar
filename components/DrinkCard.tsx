@@ -52,7 +52,7 @@ const DrinkCard: React.FC<DrinkCardProps> = ({
 
   return (
     <div className="m-2">
-      <Card className="w-[300px] ">
+      <Card className="w-[300px]">
         <CardHeader className="py-4">
           <div className="flex justify-between items-center flex-row">
             <div>
@@ -60,8 +60,8 @@ const DrinkCard: React.FC<DrinkCardProps> = ({
               <p className="text-xs font-md pt-1">{quantity} in stock</p>
             </div>
             <div>
-              <CardDescription className="text-green-800 font-bold text-md mr-2 mb-2">
-                {quantityItem === 0 ? null : quantityItem}
+              <CardDescription className="font-bold text-xl mr-2 mb-2">
+                {quantityItem === 0 ? null : <p>{quantityItem}</p>}
               </CardDescription>
             </div>
           </div>

@@ -50,7 +50,6 @@ ORDER BY s.created_at DESC;
 
 const mapSalesData = (data: any[]): Sale[] => {
   return data.map((sale) => ({
-    sale_id: "",
     saleId: sale.sale_id,
     salespersonId: sale.salesperson_id,
     totalPrice: sale.total_price,

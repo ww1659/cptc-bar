@@ -54,7 +54,7 @@ const Drinks: NextPageWithLayout<DrinksProps> = () => {
           >
             <ArrowLeft className="h-4 w-4 text-green-800" />
           </Button>
-          <p className="text-2xl text-green-800 font-medium mx-2">
+          <p className="hidden text-2xl text-green-800 font-medium mx-2 sm:block">
             <span className="text-black">drinks/</span>
             {id}
           </p>
