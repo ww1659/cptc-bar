@@ -8,6 +8,18 @@ import CreateDrinkButton from "@/components/CreateDrinkButton";
 import { useAuth } from "@clerk/nextjs";
 import { Drink } from "@/interfaces/Drink";
 
+interface DrinkFromDB {
+  drinks_id: number;
+  brewery: string;
+  type: string;
+  name: string;
+  quantity: number;
+  cost: string;
+  selling_price: string;
+  profit_item: string;
+  inc: string;
+}
+
 const stockFetcher = async (url: string) => {
   const response = await fetch(url);
   return response.json();
@@ -24,7 +36,7 @@ const Stock: NextPageWithLayout<{}> = () => {
   if (error) return <div>Error loading data {error}</div>;
   if (isLoading) return <div>Loading...</div>;
   else if (!isLoading && !error) {
-    const stockTableData = drinks.map((drink: Drink) => {
+    const stockTableData = drinks.map((drink: DrinkFromDB) => {
       return { ...drink, inc: Number(drink.inc).toFixed(2) };
     });
 
