@@ -7,6 +7,7 @@ export interface Drink {
   cost: string;
   selling_price: string;
   profit_item: string;
+  inc: string;
 }
 
 export interface OrderItem {

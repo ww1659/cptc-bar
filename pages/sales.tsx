@@ -7,6 +7,7 @@ import { DataTable } from "@/components/SalesTableV2";
 import { SalesTableColumns } from "../components/SalesTableColumns";
 import { Button } from "@/components/ui/Button";
 import { downloadSalesCsv } from "@/utils/helperFunctions";
+import { SignedIn } from "@clerk/nextjs";
 
 interface SalesProps {
   sales: Sale[];
@@ -41,12 +42,14 @@ const Sales: NextPageWithLayout<SalesProps> = () => {
           <h3 className="text-md">Export and view previous sales</h3>
         </div>
         <div>
-          <Button
-            className="bg-green-800 text-white"
-            onClick={() => handleClick(sales)}
-          >
-            Generate CSV
-          </Button>
+          <SignedIn>
+            <Button
+              className="bg-green-800 text-white"
+              onClick={() => handleClick(sales)}
+            >
+              Generate CSV
+            </Button>
+          </SignedIn>
         </div>
       </div>
 

@@ -8,8 +8,6 @@ import {
   GlassWater,
   MartiniIcon,
   MoreHorizontal,
-  Trash2Icon,
-  TrashIcon,
   WineIcon,
 } from "lucide-react";
 import { Button } from "./ui/Button";
@@ -35,6 +33,8 @@ export type StockTableColumnsProps = {
   selling_price: string;
   brewery: string;
   type: string;
+  profit_item: string;
+  inc: number;
 };
 
 export const StockTableColumns: ColumnDef<StockTableColumnsProps>[] = [
@@ -134,16 +134,23 @@ export const StockTableColumns: ColumnDef<StockTableColumnsProps>[] = [
           className="pl-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Quantity
+          Stock
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      return <div className="font-medium">{row.getValue("quantity")}</div>;
+      return (
+        <div
+          className={`font-medium ${
+            (row.getValue("quantity") as number) < 10 ? "text-red-800" : ""
+          }`}
+        >
+          {row.getValue("quantity")}
+        </div>
+      );
     },
   },
-
   {
     accessorKey: "cost",
     header: ({ column }) => {
@@ -178,6 +185,44 @@ export const StockTableColumns: ColumnDef<StockTableColumnsProps>[] = [
     cell: ({ row }) => {
       const formattedPrice = formatAsCurrency(row.getValue("selling_price"));
       return <div className="font-medium">{formattedPrice}</div>;
+    },
+  },
+  {
+    accessorKey: "inc",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="pl-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Inc
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const percentageIncrease = (Number(row.getValue("inc")) * 100).toFixed(0);
+      return <div className="font-medium">{percentageIncrease}%</div>;
+    },
+  },
+  {
+    accessorKey: "profit_item",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="pl-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Profit (£)
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const profitItem = Number(row.getValue("profit_item")).toFixed(2);
+      return <div className="font-medium">{profitItem}</div>;
     },
   },
   {

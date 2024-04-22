@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { StockTableColumns } from "@/components/StockTableColumns";
 import CreateDrinkButton from "@/components/CreateDrinkButton";
 import { useAuth } from "@clerk/nextjs";
+import { Drink } from "@/interfaces/Drink";
 
 const stockFetcher = async (url: string) => {
   const response = await fetch(url);
@@ -22,31 +23,40 @@ const Stock: NextPageWithLayout<{}> = () => {
 
   if (error) return <div>Error loading data {error}</div>;
   if (isLoading) return <div>Loading...</div>;
+  else if (!isLoading && !error) {
+    const stockTableData = drinks.map((drink: Drink) => {
+      return { ...drink, inc: Number(drink.inc).toFixed(2) };
+    });
 
-  return (
-    <div className="w-full">
-      <div className="flex flex-row justify-between max-w-3xl mx-auto items-center mb-3">
-        <div className="flex flex-col items-start">
-          <p className="text-2xl text-green-800 font-medium">Stock</p>
-          <p className="text-md">View, update and manage your stock here...</p>
-        </div>
-        <div>
-          <CreateDrinkButton />
-        </div>
-      </div>
-      <div className="max-w-3xl m-auto my-1 mb-10">
-        {isLoading ? (
-          <>
-            <p>Loading Skeleton</p>
-          </>
-        ) : (
-          <div>
-            <StockTable columns={StockTableColumns} data={drinks} />
+    console.log(stockTableData, "STOCK TABLE DATA");
+
+    return (
+      <div className="w-full">
+        <div className="flex flex-row justify-between max-w-4xl mx-auto items-center mb-3">
+          <div className="flex flex-col items-start">
+            <p className="text-2xl text-green-800 font-medium">Stock</p>
+            <p className="text-md">
+              View, update and manage your stock here...
+            </p>
           </div>
-        )}
+          <div>
+            <CreateDrinkButton />
+          </div>
+        </div>
+        <div className="max-w-4xl m-auto my-1 mb-10">
+          {isLoading ? (
+            <>
+              <p>Loading Skeleton</p>
+            </>
+          ) : (
+            <div>
+              <StockTable columns={StockTableColumns} data={stockTableData} />
+            </div>
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 Stock.getLayout = function getLayout(page: ReactElement) {

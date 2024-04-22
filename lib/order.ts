@@ -1,5 +1,20 @@
 import { db } from "./connection";
-import { Sale } from "@/interfaces/Sale";
+import { SaleItem } from "@/interfaces/Sale";
+
+interface SaleProps {
+  sale_id: string;
+  saleId: number;
+  salespersonId: number;
+  totalPrice: string;
+  totalQuantity: number;
+  totalProfit: string;
+  paid: boolean;
+  paymentMethod: string;
+  discount: string;
+  notes: string;
+  createdAt: Date;
+  saleItems: SaleItem[];
+}
 
 export async function createSaleAndItemsAndUpdateDrinks(
   salespersonId: number,
@@ -15,10 +30,20 @@ export async function createSaleAndItemsAndUpdateDrinks(
     quantity: number;
     name: string;
     price: number;
-    profit: number;
+    profit: string;
   }>
 ) {
   const client = await db.connect();
+
+  console.log(items);
+  console.log(
+    typeof items[0].drinkId,
+    typeof items[0].quantity,
+    typeof items[0].name,
+    typeof items[0].price,
+    typeof items[0].profit
+  );
+
   try {
     await client.query("BEGIN");
 
@@ -28,7 +53,7 @@ export async function createSaleAndItemsAndUpdateDrinks(
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *;
     `;
-    const saleResult = await client.query<Sale>(createSaleQuery, [
+    const saleResult = await client.query<SaleProps>(createSaleQuery, [
       salespersonId,
       totalPrice,
       totalQuantity,
@@ -41,19 +66,19 @@ export async function createSaleAndItemsAndUpdateDrinks(
     const saleId = saleResult.rows[0].sale_id;
 
     // Insert sale items
-    for (const item of items) {
+    for (const { drinkId, name, quantity, price, profit } of items) {
       const createSaleItemQuery = `
         INSERT INTO sale_items 
         (sale_id, drink_id, name, quantity_ordered, selling_price, profit)
         VALUES ($1, $2, $3, $4, $5, $6);
       `;
-      await client.query(createSaleItemQuery, [
+      const result = await client.query<{}>(createSaleItemQuery, [
         saleId,
-        item.drinkId,
-        item.name,
-        item.quantity,
-        item.price,
-        item.profit,
+        drinkId,
+        name,
+        quantity,
+        price,
+        profit,
       ]);
     }
 

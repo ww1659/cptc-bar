@@ -89,9 +89,8 @@ export function NewDrinkForm() {
             drinkSellingValue:
               Number(formValues.quantity) * Number(formValues.sellingPrice),
             drinkInc:
-              ((Number(formValues.sellingPrice) - Number(formValues.cost)) /
-                Number(formValues.cost)) *
-              100,
+              (Number(formValues.sellingPrice) - Number(formValues.cost)) /
+              Number(formValues.cost),
           },
         }),
       });
