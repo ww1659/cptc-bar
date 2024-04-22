@@ -36,9 +36,7 @@ const TakeFromOrderButton: React.FC<TakeFromOrderButtonProps> = ({
 
   return (
     <Button
-      size="icon"
-      variant="ghost"
-      className="text-green-800 border"
+      variant="outline"
       disabled={drinkQuantity === disabled}
       onClick={() =>
         handleTakeFromOrder({

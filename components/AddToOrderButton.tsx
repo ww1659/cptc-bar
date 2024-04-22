@@ -22,9 +22,7 @@ const AddToOrderButton: React.FC<Drink> = ({
 
   return (
     <Button
-      size="icon"
-      variant="ghost"
-      className="text-green-800 border"
+      variant="outline"
       onClick={() =>
         handleAddToOrder({
           drinks_id,

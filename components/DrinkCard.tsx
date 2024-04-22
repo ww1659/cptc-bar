@@ -57,17 +57,17 @@ const DrinkCard: React.FC<DrinkCardProps> = ({
           <div className="flex justify-between items-center flex-row">
             <div>
               <CardTitle className="text-green-800 text-lg">{name}</CardTitle>
-              <p className="text-xs font-md pt-1">{quantity} in stock</p>
+              <p className="text-sm font-bold pt-1">{quantity} in stock</p>
             </div>
             <div>
-              <CardDescription className="font-bold text-xl mr-2 mb-2">
+              <CardDescription className="font-bold text-black text-xl mr-2 mb-2">
                 {quantityItem === 0 ? null : <p>{quantityItem}</p>}
               </CardDescription>
             </div>
           </div>
         </CardHeader>
         <CardContent className="py-0">
-          <p className="text-2xl">£{formatPrice(selling_price)}</p>
+          <p className="text-2xl font-md">£{formatPrice(selling_price)}</p>
         </CardContent>
         <CardFooter className="flex justify-between py-4">
           <TakeFromOrderButton

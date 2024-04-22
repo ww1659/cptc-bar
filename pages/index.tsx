@@ -3,6 +3,8 @@ import type { NextPageWithLayout } from "./_app";
 import Layout from "../components/Layout";
 import DrinkBlock from "../components/DrinkBlock";
 import OrderButton from "@/components/OrderButton";
+import { HomeIcon } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 
 const drinks = [
   { title: "Good Chemistry", href: "/drinks" },
@@ -20,8 +22,13 @@ const drinks = [
 const Page: NextPageWithLayout = () => {
   return (
     <div className="w-full">
-      <div className="flex justify-end items-center flex-row mb-3">
-        {/* <p className="text-2xl font-medium">Select your drinks...</p> */}
+      <div className="flex justify-between items-center flex-row mb-3">
+        <div className="flex items-center">
+          <Button className="mx-2 border border-green-800 p-2">
+            <HomeIcon className="h-5 w-5 rounded-lg text-white-800" />
+          </Button>
+          <h1 className="text-2xl font-medium">Build your order</h1>
+        </div>
         <OrderButton />
       </div>
       <div className="flex justify-center flex-row flex-wrap my-5">

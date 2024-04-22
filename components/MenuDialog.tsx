@@ -34,7 +34,7 @@ export const MenuDialog: React.FC<MenuDialogProps> = ({ menuItems }) => {
           <MenuIcon />
         </Button>
       </SheetTrigger>
-      <SheetContent className="bg-stone-100 w-[250px]">
+      <SheetContent className="w-[250px]">
         <SheetHeader>
           <SheetTitle className="text-green-800 text-left">Menu</SheetTitle>
         </SheetHeader>

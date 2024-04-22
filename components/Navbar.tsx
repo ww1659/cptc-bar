@@ -55,7 +55,7 @@ export default function Navbar() {
           className="hidden w-full h-100 md:block md:w-auto ml-auto"
           id="navbar-default"
         >
-          <ul className="flex flex-col p-4 mt-4 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-primary font-bold text-lg">
+          <ul className="flex flex-col p-4 mt-4 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 font-bold text-lg">
             {menuItems.map((item) => {
               if (item.protected && !isSignedIn) {
                 return null;

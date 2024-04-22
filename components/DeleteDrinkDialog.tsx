@@ -74,13 +74,13 @@ export const DeleteDrinkDialog: React.FC<DeleteDialogProps> = ({
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button>Cancel</Button>
+            <Button className="">Cancel</Button>
           </DialogClose>
           <DialogClose asChild>
             <Button
               onClick={() => handleSaveClick()}
               type="submit"
-              className="text-red-700"
+              className="bg-red-800 hover:bg-red-800/80 text-white"
             >
               Delete
             </Button>

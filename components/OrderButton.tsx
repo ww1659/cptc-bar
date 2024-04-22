@@ -14,7 +14,7 @@ const OrderButton: React.FC<{}> = () => {
   };
 
   return (
-    <Button className="bg-green-800 p-2 mx-2" onClick={handleClick}>
+    <Button className="p-2 mx-2" onClick={handleClick}>
       <div className="flex flex-row">
         <Beer className="h-5 w-5 mx-1 text-white" />
         <p className="mx-1 text-white">Cart</p>

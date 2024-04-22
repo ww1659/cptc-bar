@@ -52,7 +52,7 @@ const Drinks: NextPageWithLayout<DrinksProps> = () => {
             className="mx-2 border border-green-800"
             onClick={handleGoBack}
           >
-            <ArrowLeft className="h-4 w-4 text-green-800" />
+            <ArrowLeft className="h-4 w-4" />
           </Button>
           <p className="hidden text-2xl text-green-800 font-medium mx-2 sm:block">
             <span className="text-black">drinks/</span>
