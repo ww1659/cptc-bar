@@ -35,11 +35,16 @@ const PlaceOrderButton: React.FC<{ discount: string }> = ({ discount }) => {
               (acc, item) => acc + item.quantityOrdered,
               0
             ),
-            totalProfit: order.items.reduce(
-              (acc, item) =>
-                acc + Number(item.drink.profit_item) * item.quantityOrdered,
-              0
-            ),
+            totalProfit: order.items.reduce((acc, item) => {
+              const sellingPrice = Number(item.drink.selling_price);
+              const discountFactor = (100 - Number(discount)) / 100;
+              const costPerItem = Number(item.drink.cost);
+              const quantity = item.quantityOrdered;
+
+              const profitPerItem =
+                (sellingPrice * discountFactor - costPerItem) * quantity;
+              return acc + profitPerItem;
+            }, 0),
             paid: true,
             paymentMethod: "card",
             discount: discount || "0",
@@ -52,7 +57,10 @@ const PlaceOrderButton: React.FC<{ discount: string }> = ({ discount }) => {
             price:
               Number(item.drink.selling_price) *
               ((100 - Number(discount)) / 100),
-            profit: item.drink.profit_item,
+            profit:
+              Number(item.drink.selling_price) *
+                ((100 - Number(discount)) / 100) -
+              Number(item.drink.cost),
           })),
         }),
       });

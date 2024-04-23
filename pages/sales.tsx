@@ -22,14 +22,13 @@ const Sales: NextPageWithLayout<SalesProps> = () => {
   const { data: sales, error, isLoading } = useSWR("/api/sales", salesFetcher);
   console.log(sales);
 
-  const handleClick = async (sales: Sale[]) => {
-    try {
-      console.log(sales);
-      downloadSalesCsv(sales);
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-    }
-  };
+  // const handleClick = async (sales: Sale[]) => {
+  //   try {
+  //     downloadSalesCsv(sales);
+  //   } catch (error) {
+  //     console.error("Error generating PDF:", error);
+  //   }
+  // };
 
   if (error) return <div>Error loading data {error}</div>;
   if (isLoading) return <div>Loading...</div>;
@@ -41,7 +40,7 @@ const Sales: NextPageWithLayout<SalesProps> = () => {
           <h1 className="text-2xl text-green-800 font-medium">Sales</h1>
           <h3 className="text-md">Export and view previous sales</h3>
         </div>
-        <div>
+        {/* <div>
           <SignedIn>
             <Button
               className="bg-green-800 text-white"
@@ -50,7 +49,7 @@ const Sales: NextPageWithLayout<SalesProps> = () => {
               Generate CSV
             </Button>
           </SignedIn>
-        </div>
+        </div> */}
       </div>
 
       <div className="max-w-3xl mx-auto my-1 mb-10">

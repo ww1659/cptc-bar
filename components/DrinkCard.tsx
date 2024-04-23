@@ -11,6 +11,7 @@ import {
 import { useOrder } from "@/contexts/OrderContext";
 import TakeFromOrderButton from "./TakeFromOrderButton";
 import AddToOrderButton from "./AddToOrderButton";
+import Image from "next/image";
 
 interface DrinkCardProps {
   drinks_id: number;
@@ -56,7 +57,10 @@ const DrinkCard: React.FC<DrinkCardProps> = ({
         <CardHeader className="py-4">
           <div className="flex justify-between items-center flex-row">
             <div>
-              <CardTitle className="text-green-800 text-lg">{name}</CardTitle>
+              <div className="flex flex-row items-center">
+                <CardTitle className="text-green-800 text-lg">{name}</CardTitle>
+              </div>
+
               <p className="text-sm font-bold pt-1">{quantity} in stock</p>
             </div>
             <div>

@@ -31,8 +31,11 @@ import {
   DropdownMenuTrigger,
 } from "./ui/DropdownMenu";
 import { SalesDatePicker } from "./DatePicker";
-import { formatAsCurrency } from "@/utils/helperFunctions";
-import { SaleItem } from "@/interfaces/Sale";
+import { downloadSalesCsv, formatAsCurrency } from "@/utils/helperFunctions";
+import { Sale, SaleItem } from "@/interfaces/Sale";
+import { SignedIn } from "@clerk/nextjs";
+import { DownloadIcon } from "lucide-react";
+import { DataTablePagination } from "./DataTablePagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -115,9 +118,23 @@ export function DataTable<TData, TValue>({
     };
   }, []);
 
+  const handleCSVClick = async (csvSales: Sale[]) => {
+    try {
+      console.log("pressed");
+      downloadSalesCsv(csvSales);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
+  };
+
+  const selectedSales = table.getSelectedRowModel().rows;
+  const csvSales = selectedSales.map((sale) => {
+    return sale.original as Sale;
+  });
+
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="flex flex-row justify-between items-center py-4">
         <SalesDatePicker date={selectedDate} setDate={setSelectedDate} />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -148,6 +165,15 @@ export function DataTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        <SignedIn>
+          <Button
+            className="bg-green-800 text-white ml-2 p-3"
+            onClick={() => handleCSVClick(csvSales)}
+            disabled={csvSales.length === 0 ? true : false}
+          >
+            <DownloadIcon className="h-5 w-5" />
+          </Button>
+        </SignedIn>
       </div>
 
       <div className="rounded-md border">
@@ -266,7 +292,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      {/* <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
@@ -287,6 +313,9 @@ export function DataTable<TData, TValue>({
         >
           Next
         </Button>
+      </div> */}
+      <div className="py-4">
+        <DataTablePagination table={table} />
       </div>
     </div>
   );

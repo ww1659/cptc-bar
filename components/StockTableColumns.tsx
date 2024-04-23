@@ -23,6 +23,7 @@ import {
 import { UpdateDrinkDialog } from "./UpdateDrinkDialog";
 import { DeleteDrinkDialog } from "./DeleteDrinkDialog";
 import { UpdateIcon } from "@radix-ui/react-icons";
+import Image from "next/image";
 
 export type StockTableColumnsProps = {
   id: string;
@@ -75,9 +76,36 @@ export const StockTableColumns: ColumnDef<StockTableColumnsProps>[] = [
     },
     cell: ({ row }) => {
       const drinkType = row.getValue("type");
-      if (
-        drinkType === "goodchemistry" ||
-        drinkType === "wiper&true" ||
+      if (drinkType === "goodchemistry") {
+        return (
+          <div className="w-10 h-10">
+            <Image
+              src="/images/logos/gc-logo.png"
+              className="aspect-auto rounded-lg"
+              width={500}
+              height={500}
+              alt="w&t logo"
+              quality={100}
+              placeholder="empty"
+            />
+          </div>
+        );
+      }
+      if (drinkType === "wiper&true") {
+        return (
+          <div className="w-10 h-10 pt-1">
+            <Image
+              src="/images/logos/wt-logo.png"
+              className="aspect-auto rounded-lg"
+              width={500}
+              height={500}
+              alt="w&t logo"
+              quality={100}
+              placeholder="empty"
+            />
+          </div>
+        );
+      } else if (
         drinkType === "lager" ||
         drinkType === "bitter" ||
         drinkType === "ale"
@@ -118,9 +146,9 @@ export const StockTableColumns: ColumnDef<StockTableColumnsProps>[] = [
       return (
         <div className="font-medium">
           <div>{formatName(row.getValue("name"))}</div>
-          {brewery !== null ? (
+          {/* {brewery !== null ? (
             <div className="text-xs text-green-800">{brewery}</div>
-          ) : null}
+          ) : null} */}
         </div>
       );
     },

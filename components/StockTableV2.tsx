@@ -70,10 +70,10 @@ export function StockTable<TData, TValue>({
       <div className="flex flex-row items-center justify-between py-4">
         <div className="flex justify-start">
           <Input
-            placeholder="Filter by drink..."
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            placeholder="Filter by type of drink..."
+            value={(table.getColumn("type")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
+              table.getColumn("type")?.setFilterValue(event.target.value)
             }
             className="max-w-sm"
           />
