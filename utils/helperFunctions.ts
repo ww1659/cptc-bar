@@ -117,13 +117,18 @@ export const createCsvData = (sales: Sale[]): string => {
   return [columnOrder.join(","), ...saleCsvRows].join("\n");
 };
 
-export const downloadSalesCsv = (sales: Sale[], filename = "data.csv") => {
+export const downloadSalesCsv = (sales: Sale[], filename = "sales") => {
+  const timestamp = format(new Date(), "yyyy-MM-dd");
+  const formattedFilename = filename
+    ? `${timestamp}-${filename}.csv`
+    : `${timestamp}.csv`;
+
   let csvData = createCsvData(sales);
   let blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
   let url = URL.createObjectURL(blob);
 
   let a = document.createElement("a");
   a.href = url;
-  a.setAttribute("download", filename);
+  a.setAttribute("download", formattedFilename);
   a.click();
 };

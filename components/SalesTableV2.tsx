@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { format } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 import {
   ColumnDef,
@@ -28,6 +29,15 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "./ui/DropdownMenu";
 import { SalesDatePicker } from "./DatePicker";
@@ -118,10 +128,9 @@ export function DataTable<TData, TValue>({
     };
   }, []);
 
-  const handleCSVClick = async (csvSales: Sale[]) => {
+  const handleCSVClick = async (sales: Sale[], filename: string) => {
     try {
-      console.log("pressed");
-      downloadSalesCsv(csvSales);
+      downloadSalesCsv(sales, filename);
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
@@ -130,6 +139,13 @@ export function DataTable<TData, TValue>({
   const selectedSales = table.getSelectedRowModel().rows;
   const csvSales = selectedSales.map((sale) => {
     return sale.original as Sale;
+  });
+
+  const currentMonth = format(new Date(), "yyyy-MM");
+  const currentMonthDisplay = format(new Date(), "MMMM");
+  const monthlySales = (data as Sale[]).filter((sale) => {
+    const saleDate = format(sale.createdAt, "yyyy-MM");
+    return saleDate === currentMonth;
   });
 
   return (
@@ -166,19 +182,68 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
         <SignedIn>
-          <Button
-            className="bg-green-800 text-white ml-2 p-3"
-            onClick={() => handleCSVClick(csvSales)}
-            disabled={csvSales.length === 0 ? true : false}
-          >
-            <DownloadIcon className="h-5 w-5" />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="bg-green-800 text-white ml-2 p-3">
+                <DownloadIcon className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="bg-white">
+              <div className="flex flex-row items-center">
+                <DropdownMenuLabel>Export Sale Data</DropdownMenuLabel>
+                <DropdownMenuShortcut className="mr-1">
+                  .csv
+                </DropdownMenuShortcut>
+              </div>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem className="m-0">
+                  <Button
+                    variant="ghost"
+                    className="m-0 hover:bg-0 pl-0"
+                    onClick={() => handleCSVClick(data as Sale[], "all")}
+                  >
+                    All sales
+                  </Button>
+                  <DropdownMenuShortcut>{data.length}</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="m-0">
+                  <Button
+                    variant="ghost"
+                    className="m-0 hover:bg-0 pl-0"
+                    onClick={() =>
+                      handleCSVClick(
+                        monthlySales as Sale[],
+                        currentMonthDisplay.toLowerCase()
+                      )
+                    }
+                  >
+                    {currentMonthDisplay}
+                  </Button>
+                  <DropdownMenuShortcut>
+                    {monthlySales.length}
+                  </DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="m-0">
+                  <Button
+                    variant="ghost"
+                    className="m-0 hover:bg-0 pl-0"
+                    onClick={() => handleCSVClick(csvSales, "selected")}
+                    disabled={csvSales.length === 0 ? true : false}
+                  >
+                    Selected
+                  </Button>
+                  <DropdownMenuShortcut>{csvSales.length}</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </SignedIn>
       </div>
 
       <div className="rounded-md border">
         <Table>
-          <TableHeader className="bg-stone-100">
+          <TableHeader className="bg-stone-100 hover:bg-0">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -203,6 +268,7 @@ export function DataTable<TData, TValue>({
                 return (
                   <>
                     <TableRow
+                      className="hover:bg-0 focus:bg-0"
                       key={row.id}
                       data-state={row.getIsSelected() && "selected"}
                     >
@@ -218,7 +284,7 @@ export function DataTable<TData, TValue>({
                     {row.getIsExpanded() ? (
                       <TableRow
                         key={`${row.id}-expanded-header`}
-                        className="border-0 bg-stone-100/90"
+                        className="border-0 bg-stone-100 hover:bg-stone-100"
                       >
                         {table
                           .getVisibleFlatColumns()
@@ -241,40 +307,46 @@ export function DataTable<TData, TValue>({
                       </TableRow>
                     ) : null}
                     {row.getIsExpanded()
-                      ? saleItems.map((saleItem: SaleItem) => (
-                          <TableRow
-                            key={`${row.id}-${saleItem.saleItemId}`}
-                            className="border-0 bg-stone-100/90"
-                          >
-                            {table
-                              .getVisibleFlatColumns()
-                              .map((cell, index, self) => (
-                                <TableCell
-                                  key={`${row.id}-${saleItem.saleItemId}-${cell.id}`}
-                                  className={`${
-                                    index === self.length - 2
-                                      ? "text-right"
-                                      : ""
-                                  } ${
-                                    index === self.length - 4
-                                      ? "text-green-800"
-                                      : ""
-                                  } py-2 text-xs`}
-                                >
-                                  {index === self.length - 4
-                                    ? saleItem.name
-                                    : index === self.length - 3
-                                    ? saleItem.quantity
-                                    : index === self.length - 2
-                                    ? `£${formatAsCurrency(
-                                        Number(saleItem.price) *
-                                          saleItem.quantity
-                                      )}`
-                                    : null}
-                                </TableCell>
-                              ))}
-                          </TableRow>
-                        ))
+                      ? saleItems.map(
+                          (
+                            saleItem: SaleItem,
+                            index: number,
+                            self: SaleItem[]
+                          ) => (
+                            <TableRow
+                              key={`${row.id}-${saleItem.saleItemId}`}
+                              className="bg-stone-100 hover:bg-stone-100"
+                            >
+                              {table
+                                .getVisibleFlatColumns()
+                                .map((cell, index, self) => (
+                                  <TableCell
+                                    key={`${row.id}-${saleItem.saleItemId}-${cell.id}`}
+                                    className={`${
+                                      index === self.length - 2
+                                        ? "text-right"
+                                        : ""
+                                    } ${
+                                      index === self.length - 4
+                                        ? "text-green-800"
+                                        : ""
+                                    } py-2 text-xs`}
+                                  >
+                                    {index === self.length - 4
+                                      ? saleItem.name
+                                      : index === self.length - 3
+                                      ? saleItem.quantity
+                                      : index === self.length - 2
+                                      ? `£${formatAsCurrency(
+                                          Number(saleItem.price) *
+                                            saleItem.quantity
+                                        )}`
+                                      : null}
+                                  </TableCell>
+                                ))}
+                            </TableRow>
+                          )
+                        )
                       : null}
                   </>
                 );

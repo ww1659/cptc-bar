@@ -53,15 +53,15 @@ const DrinkCard: React.FC<DrinkCardProps> = ({
 
   return (
     <div className="m-2">
-      <Card className="w-[300px]">
+      <Card className="w-[320px] border">
         <CardHeader className="py-4">
           <div className="flex justify-between items-center flex-row">
             <div>
               <div className="flex flex-row items-center">
-                <CardTitle className="text-green-800 text-lg">{name}</CardTitle>
+                <CardTitle className="text-green-800 text-xl">{name}</CardTitle>
               </div>
 
-              <p className="text-sm font-bold pt-1">{quantity} in stock</p>
+              <p className="text-md pt-1">{quantity} in stock</p>
             </div>
             <div>
               <CardDescription className="font-bold text-black text-xl mr-2 mb-2">
@@ -73,28 +73,34 @@ const DrinkCard: React.FC<DrinkCardProps> = ({
         <CardContent className="py-0">
           <p className="text-2xl font-md">£{formatPrice(selling_price)}</p>
         </CardContent>
-        <CardFooter className="flex justify-between py-4">
-          <TakeFromOrderButton
-            drinks_id={drinks_id}
-            brewery={brewery}
-            type={type}
-            name={name}
-            quantity={quantity}
-            cost={cost}
-            selling_price={selling_price}
-            profit_item={profit_item}
-            disabled={0}
-          />
-          <AddToOrderButton
-            drinks_id={drinks_id}
-            brewery={brewery}
-            type={type}
-            name={name}
-            quantity={quantity}
-            cost={cost}
-            selling_price={selling_price}
-            profit_item={profit_item}
-          />
+        <CardFooter className="flex justify-between p-0 mt-3">
+          <div className="w-1/2 border">
+            <TakeFromOrderButton
+              drinks_id={drinks_id}
+              brewery={brewery}
+              type={type}
+              name={name}
+              quantity={quantity}
+              cost={cost}
+              selling_price={selling_price}
+              profit_item={profit_item}
+              disabled={0}
+              drinkCard={true}
+            />
+          </div>
+          <div className="w-1/2 border">
+            <AddToOrderButton
+              drinks_id={drinks_id}
+              brewery={brewery}
+              type={type}
+              name={name}
+              quantity={quantity}
+              cost={cost}
+              selling_price={selling_price}
+              profit_item={profit_item}
+              drinkCard={true}
+            />
+          </div>
         </CardFooter>
       </Card>
     </div>

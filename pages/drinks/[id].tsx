@@ -76,6 +76,8 @@ const Drinks: NextPageWithLayout<DrinksProps> = () => {
           <DrinkCardSkeleton />
           <DrinkCardSkeleton />
           <DrinkCardSkeleton />
+          <DrinkCardSkeleton />
+          <DrinkCardSkeleton />
         </div>
       ) : (
         <div className="flex justify-center flex-row flex-wrap">

@@ -20,7 +20,6 @@ const salesFetcher = async (url: string) => {
 
 const Sales: NextPageWithLayout<SalesProps> = () => {
   const { data: sales, error, isLoading } = useSWR("/api/sales", salesFetcher);
-  console.log(sales);
 
   // const handleClick = async (sales: Sale[]) => {
   //   try {
@@ -35,7 +34,7 @@ const Sales: NextPageWithLayout<SalesProps> = () => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-row justify-between max-w-3xl items-center mx-auto mb-3">
+      <div className="flex flex-row justify-between max-w-4xl items-center mx-auto mb-3">
         <div className="flex flex-col items-start">
           <h1 className="text-2xl text-green-800 font-medium">Sales</h1>
           <h3 className="text-md">Export and view previous sales</h3>
@@ -52,7 +51,7 @@ const Sales: NextPageWithLayout<SalesProps> = () => {
         </div> */}
       </div>
 
-      <div className="max-w-3xl mx-auto my-1 mb-10">
+      <div className="max-w-4xl mx-auto my-1 mb-10">
         {isLoading ? (
           <>
             <p>Loading Skeleton</p>

@@ -6,6 +6,7 @@ import { Drink } from "@/interfaces/Drink";
 
 interface TakeFromOrderButtonProps extends Drink {
   disabled?: number;
+  drinkCard?: boolean;
 }
 
 const TakeFromOrderButton: React.FC<TakeFromOrderButtonProps> = ({
@@ -18,6 +19,7 @@ const TakeFromOrderButton: React.FC<TakeFromOrderButtonProps> = ({
   selling_price,
   profit_item,
   disabled,
+  drinkCard,
 }) => {
   const { takeFromOrder, order } = useOrder();
 
@@ -36,8 +38,9 @@ const TakeFromOrderButton: React.FC<TakeFromOrderButtonProps> = ({
 
   return (
     <Button
-      variant="outline"
+      variant={`${drinkCard ? "ghost" : "outline"}`}
       disabled={drinkQuantity === disabled}
+      className={`${drinkCard ? "h-[56px] w-[158px]" : ""}`}
       onClick={() =>
         handleTakeFromOrder({
           drinks_id,
@@ -51,7 +54,7 @@ const TakeFromOrderButton: React.FC<TakeFromOrderButtonProps> = ({
         })
       }
     >
-      <MinusCircledIcon className="h-5 w-5" />
+      <MinusCircledIcon className={`${drinkCard ? "h-7 w-7" : "h-5 w-5"}`} />
     </Button>
   );
 };

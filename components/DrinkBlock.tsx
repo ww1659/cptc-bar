@@ -51,7 +51,7 @@ const DrinkBlock: React.FC<DrinkBlockProps> = ({ title, href, icon }) => {
           />
         ) : (
           <div className="flex flex-col items-center">
-            <h3 className="flex text-2xl font-medium mb-2">{title}</h3>
+            <h3 className="flex text-3xl font-medium mb-2">{title}</h3>
             <div className="flex mt-2">
               {title === "Lager" ? (
                 <BeerIcon className="h-7 w-7" />
