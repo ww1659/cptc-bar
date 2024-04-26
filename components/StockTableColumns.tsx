@@ -107,7 +107,9 @@ export const StockTableColumns: ColumnDef<StockTableColumnsProps>[] = [
         );
       } else if (
         drinkType === "lager" ||
+        drinkType === "stout" ||
         drinkType === "bitter" ||
+        drinkType === "wheatbeer" ||
         drinkType === "ale"
       ) {
         return <BeerIcon className="w-5, h-5" />;
@@ -177,6 +179,15 @@ export const StockTableColumns: ColumnDef<StockTableColumnsProps>[] = [
           {row.getValue("quantity")}
         </div>
       );
+    },
+  },
+  {
+    accessorKey: "brewery",
+    header: ({ column }) => {
+      null;
+    },
+    cell: ({ row }) => {
+      null;
     },
   },
   {

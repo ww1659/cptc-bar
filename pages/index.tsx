@@ -9,9 +9,7 @@ import { Button } from "@/components/ui/Button";
 const drinks = [
   { title: "Good Chemistry", href: "/drinks" },
   { title: "Wiper & True", href: "/drinks" },
-  { title: "Lager", href: "/drinks" },
-  { title: "Bitter", href: "/drinks" },
-  { title: "Ale", href: "/drinks" },
+  { title: "Beer", href: "/drinks" },
   { title: "Cider", href: "/drinks" },
   { title: "Wine", href: "/drinks" },
   { title: "Spirits", href: "/drinks" },

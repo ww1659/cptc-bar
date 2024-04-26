@@ -163,7 +163,10 @@ export function NewDrinkForm() {
                           </SelectItem>
                           <SelectItem value="lager">Lager</SelectItem>
                           <SelectItem value="cider">Cider</SelectItem>
+                          <SelectItem value="stout">Stout</SelectItem>
                           <SelectItem value="bitter">Bitter</SelectItem>
+                          <SelectItem value="wheatbeer">Wheat Beer</SelectItem>
+                          <SelectItem value="sour">Sour</SelectItem>
                           <SelectItem value="wine">Wine</SelectItem>
                           <SelectItem value="softdrink">Soft Drink</SelectItem>
                           <SelectItem value="lowtono">Low-to-No</SelectItem>

@@ -34,12 +34,14 @@ export function StockTable<TData, TValue>({
   columns,
   data,
 }: StockTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = React.useState<SortingState>([
+    { id: "brewery", desc: true },
+  ]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<VisibilityState>({ brewery: false });
   const [rowSelection, setRowSelection] = React.useState({});
   const [expanded, setExpanded] = React.useState({});
 
@@ -56,6 +58,7 @@ export function StockTable<TData, TValue>({
     onColumnFiltersChange: setColumnFilters,
     onRowSelectionChange: setRowSelection,
     onExpandedChange: setExpanded,
+
     state: {
       sorting,
       columnFilters,
@@ -64,6 +67,8 @@ export function StockTable<TData, TValue>({
       expanded,
     },
   });
+
+  console.log(sorting);
 
   return (
     <div>

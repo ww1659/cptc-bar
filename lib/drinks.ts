@@ -17,16 +17,37 @@ export async function fetchDrinks(): Promise<Drink[]> {
 }
 
 export async function fetchDrinksByType(drinkType: string): Promise<Drink[]> {
-  const getDrinksQuery = `SELECT * FROM drinks WHERE type=$1;`;
-  try {
-    const data = await db.query(getDrinksQuery, [drinkType]);
-    const drinks: Drink[] = data.rows;
-    if (drinks.length === 0) {
-      return [];
-    } else return drinks;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw error;
+  let getDrinksQuery = "";
+  if (drinkType === "beer") {
+    getDrinksQuery = `SELECT * FROM drinks WHERE type=$1 OR type=$2 OR type=$3 OR type=$4 OR type=$5;`;
+    try {
+      const data = await db.query(getDrinksQuery, [
+        "ale",
+        "stout",
+        "lager",
+        "bitter",
+        "wheatbeer",
+      ]);
+      const drinks: Drink[] = data.rows;
+      if (drinks.length === 0) {
+        return [];
+      } else return drinks;
+    } catch (error) {
+      console.error("Database Error:", error);
+      throw error;
+    }
+  } else {
+    getDrinksQuery = `SELECT * FROM drinks WHERE type=$1;`;
+    try {
+      const data = await db.query(getDrinksQuery, [drinkType]);
+      const drinks: Drink[] = data.rows;
+      if (drinks.length === 0) {
+        return [];
+      } else return drinks;
+    } catch (error) {
+      console.error("Database Error:", error);
+      throw error;
+    }
   }
 }
 

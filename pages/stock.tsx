@@ -37,7 +37,11 @@ const Stock: NextPageWithLayout<{}> = () => {
   if (isLoading) return <div>Loading...</div>;
   else if (!isLoading && !error) {
     const stockTableData = drinks.map((drink: DrinkFromDB) => {
-      return { ...drink, inc: Number(drink.inc).toFixed(2) };
+      return {
+        ...drink,
+        inc: Number(drink.inc).toFixed(2),
+        profit_item: Number(drink.profit_item).toFixed(2),
+      };
     });
 
     console.log(stockTableData, "STOCK TABLE DATA");

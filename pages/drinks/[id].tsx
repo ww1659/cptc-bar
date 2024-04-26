@@ -1,7 +1,5 @@
 import type { ReactElement } from "react";
 import type { NextPageWithLayout } from ".././_app";
-import { Inter } from "next/font/google";
-const inter = Inter({ subsets: ["latin"] });
 import { useRouter } from "next/router";
 import useSWR from "swr";
 
@@ -43,6 +41,8 @@ const Drinks: NextPageWithLayout<DrinksProps> = () => {
   const handleGoBack = () => {
     router.back();
   };
+
+  if (error) return <div>Error loading data {error}</div>;
 
   return (
     <div className="w-full">

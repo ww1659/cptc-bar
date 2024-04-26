@@ -4,88 +4,94 @@ import { useOrder } from "@/contexts/OrderContext";
 import { OrderState } from "@/interfaces/Drink";
 import { useToast } from "../components/ui/UseToast";
 import { useRouter } from "next/router";
+import { OrderDialog } from "./OrderDialog";
 
-const PlaceOrderButton: React.FC<{ discount: string }> = ({ discount }) => {
-  const { order, clearOrder } = useOrder();
-  const [orderProcessing, setOrderProcessing] = useState(false);
-  const { toast } = useToast();
-  const router = useRouter();
+interface PlaceOrderProps {
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-  const handleOrderClick = async (order: OrderState) => {
-    const totalWithDiscount =
-      order.totalPrice * ((100 - Number(discount)) / 100);
+const PlaceOrderButton: React.FC<PlaceOrderProps> = ({ setDialogOpen }) => {
+  const { order } = useOrder();
 
-    if (order.items.length === 0) {
-      console.log("Cannot place order: no items in cart");
-      return;
-    }
+  // const handleOrderClick = async (order: OrderState) => {
+  //   const totalWithDiscount =
+  //     order.totalPrice * ((100 - Number(discount)) / 100);
 
-    try {
-      setOrderProcessing(true);
-      const response = await fetch("/api/order", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          sales: {
-            salespersonId: 1,
-            totalPrice: totalWithDiscount,
-            totalQuantity: order.items.reduce(
-              (acc, item) => acc + item.quantityOrdered,
-              0
-            ),
-            totalProfit: order.items.reduce((acc, item) => {
-              const sellingPrice = Number(item.drink.selling_price);
-              const discountFactor = (100 - Number(discount)) / 100;
-              const costPerItem = Number(item.drink.cost);
-              const quantity = item.quantityOrdered;
+  //   if (order.items.length === 0) {
+  //     console.log("Cannot place order: no items in cart");
+  //     return;
+  //   }
 
-              const profitPerItem =
-                (sellingPrice * discountFactor - costPerItem) * quantity;
-              return acc + profitPerItem;
-            }, 0),
-            paid: true,
-            paymentMethod: "card",
-            discount: discount || "0",
-            notes: "",
-          },
-          items: order.items.map((item) => ({
-            drinkId: item.drink.drinks_id,
-            quantity: item.quantityOrdered,
-            name: item.drink.name,
-            price:
-              Number(item.drink.selling_price) *
-              ((100 - Number(discount)) / 100),
-            profit:
-              Number(item.drink.selling_price) *
-                ((100 - Number(discount)) / 100) -
-              Number(item.drink.cost),
-          })),
-        }),
-      });
+  //   try {
+  //     setOrderProcessing(true);
+  //     const response = await fetch("/api/order", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         sales: {
+  //           salespersonId: 1,
+  //           totalPrice: totalWithDiscount,
+  //           totalQuantity: order.items.reduce(
+  //             (acc, item) => acc + item.quantityOrdered,
+  //             0
+  //           ),
+  //           totalProfit: order.items.reduce((acc, item) => {
+  //             const sellingPrice = Number(item.drink.selling_price);
+  //             const discountFactor = (100 - Number(discount)) / 100;
+  //             const costPerItem = Number(item.drink.cost);
+  //             const quantity = item.quantityOrdered;
 
-      if (!response.ok) {
-        console.error("Failed to update sales and items:", response.statusText);
-        toast({
-          title: "Uh Oh!",
-          description: "Something went wrong, please try again",
-        });
-        setOrderProcessing(false);
-        return;
-      } else {
-        toast({
-          title: "Huzzah!",
-          description: "Your order has been successfully placed :)",
-        });
-        setOrderProcessing(false);
-        clearOrder();
-        router.push("/");
-      }
-    } catch (error) {
-      console.error("Error updating drinks:", error);
-      setOrderProcessing(false);
-    }
+  //             const profitPerItem =
+  //               (sellingPrice * discountFactor - costPerItem) * quantity;
+  //             return acc + profitPerItem;
+  //           }, 0),
+  //           paid: true,
+  //           paymentMethod: "card",
+  //           discount: discount || "0",
+  //           notes: "",
+  //         },
+  //         items: order.items.map((item) => ({
+  //           drinkId: item.drink.drinks_id,
+  //           quantity: item.quantityOrdered,
+  //           name: item.drink.name,
+  //           price:
+  //             Number(item.drink.selling_price) *
+  //             ((100 - Number(discount)) / 100),
+  //           profit:
+  //             Number(item.drink.selling_price) *
+  //               ((100 - Number(discount)) / 100) -
+  //             Number(item.drink.cost),
+  //         })),
+  //       }),
+  //     });
+
+  //     if (!response.ok) {
+  //       console.error("Failed to update sales and items:", response.statusText);
+  //       toast({
+  //         title: "Uh Oh!",
+  //         description: "Something went wrong, please try again",
+  //       });
+  //       setOrderProcessing(false);
+  //       return;
+  //     } else {
+  //       toast({
+  //         title: "Huzzah!",
+  //         description: "Your order has been successfully placed :)",
+  //       });
+  //       setOrderProcessing(false);
+  //       clearOrder();
+  //       router.push("/");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating drinks:", error);
+  //     setOrderProcessing(false);
+  //   }
+  // };
+
+  const handleOrderClick = () => {
+    setDialogOpen(true);
   };
 
   return (
@@ -93,9 +99,9 @@ const PlaceOrderButton: React.FC<{ discount: string }> = ({ discount }) => {
       <Button
         disabled={order.items.length === 0}
         className="w-full border border-green-800"
-        onClick={() => handleOrderClick(order)}
+        onClick={() => handleOrderClick()}
       >
-        {orderProcessing ? "Processing" : "Place Order"}
+        Place Order
       </Button>
     </div>
   );

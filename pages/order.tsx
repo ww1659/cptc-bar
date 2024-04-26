@@ -7,6 +7,7 @@ import { useOrder } from "@/contexts/OrderContext";
 import PlaceOrderButton from "@/components/PlaceOrderButton";
 import { DiscountSelector } from "@/components/DiscountSelector";
 import { SignedIn } from "@clerk/nextjs";
+import { OrderDialog } from "@/components/OrderDialog";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ const Order: NextPageWithLayout = () => {
   const { order } = useOrder();
   const { totalPrice } = order;
   const [discount, setDiscount] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const totalWithDiscount = totalPrice * ((100 - Number(discount)) / 100);
 
@@ -41,7 +43,7 @@ const Order: NextPageWithLayout = () => {
           )}
         </div>
         <div>
-          <PlaceOrderButton discount={discount} />
+          <PlaceOrderButton setDialogOpen={setDialogOpen} />
         </div>
         <div className="flex flex-row my-4 justify-end">
           <div>
@@ -51,6 +53,13 @@ const Order: NextPageWithLayout = () => {
           </div>
         </div>
       </div>
+      {dialogOpen ? (
+        <OrderDialog
+          dialogOpen={dialogOpen}
+          setDialogOpen={setDialogOpen}
+          discount={discount}
+        />
+      ) : null}
     </div>
   );
 };

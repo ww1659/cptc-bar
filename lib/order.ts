@@ -35,15 +35,6 @@ export async function createSaleAndItemsAndUpdateDrinks(
 ) {
   const client = await db.connect();
 
-  console.log(items);
-  console.log(
-    typeof items[0].drinkId,
-    typeof items[0].quantity,
-    typeof items[0].name,
-    typeof items[0].price,
-    typeof items[0].profit
-  );
-
   try {
     await client.query("BEGIN");
 

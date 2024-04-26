@@ -11,7 +11,6 @@ import {
 import { useOrder } from "@/contexts/OrderContext";
 import TakeFromOrderButton from "./TakeFromOrderButton";
 import AddToOrderButton from "./AddToOrderButton";
-import Image from "next/image";
 
 interface DrinkCardProps {
   drinks_id: number;
