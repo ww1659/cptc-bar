@@ -113,7 +113,7 @@ export const OrderDialog: React.FC<OrderDialogProps> = ({
         setDialogOpen(false);
         setOrderProcessing(false);
       }
-    }, 3000);
+    }, 1000);
   };
 
   const handleCancelClick = () => {
