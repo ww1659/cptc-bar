@@ -32,12 +32,8 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "./ui/DropdownMenu";
 import { SalesDatePicker } from "./DatePicker";
@@ -46,15 +42,18 @@ import { Sale, SaleItem } from "@/interfaces/Sale";
 import { SignedIn } from "@clerk/nextjs";
 import { DownloadIcon } from "lucide-react";
 import { DataTablePagination } from "./DataTablePagination";
+import useSWR from "swr";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  userRole: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  userRole,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -128,6 +127,16 @@ export function DataTable<TData, TValue>({
     };
   }, []);
 
+  React.useEffect(() => {
+    if (userRole) {
+      setColumnVisibility({
+        ...columnVisibility,
+        actions: userRole === "admin",
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userRole]);
+
   const handleCSVClick = async (sales: Sale[], filename: string) => {
     try {
       downloadSalesCsv(sales, filename);
@@ -161,7 +170,9 @@ export function DataTable<TData, TValue>({
           <DropdownMenuContent align="end" className="bg-white">
             {table
               .getAllColumns()
-              .filter((column) => column.getCanHide())
+              .filter(
+                (column) => column.getCanHide() && column.id !== "actions"
+              )
               .map((column) => {
                 if (column.id !== "saleItems") {
                   return (
@@ -181,7 +192,7 @@ export function DataTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-        <SignedIn>
+        {userRole === "admin" && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button className="bg-green-800 text-white ml-2 p-3">
@@ -238,7 +249,7 @@ export function DataTable<TData, TValue>({
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-        </SignedIn>
+        )}
       </div>
 
       <div className="rounded-md border">
@@ -364,28 +375,6 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      {/* <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
-      </div> */}
       <div className="py-4">
         <DataTablePagination table={table} />
       </div>

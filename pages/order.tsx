@@ -1,6 +1,5 @@
 import { useState, type ReactElement } from "react";
 import type { NextPageWithLayout } from "./_app";
-import { Inter } from "next/font/google";
 import Layout from "../components/Layout";
 import OrderTable from "@/components/OrderTable";
 import { useOrder } from "@/contexts/OrderContext";
@@ -8,8 +7,8 @@ import PlaceOrderButton from "@/components/PlaceOrderButton";
 import { DiscountSelector } from "@/components/DiscountSelector";
 import { SignedIn } from "@clerk/nextjs";
 import { OrderDialog } from "@/components/OrderDialog";
-
-const inter = Inter({ subsets: ["latin"] });
+import useSWR from "swr";
+import { useLocalAuth } from "@/contexts/AuthContext";
 
 const formatTotal = (total: number) => {
   return total.toFixed(2);
@@ -20,6 +19,7 @@ const Order: NextPageWithLayout = () => {
   const { totalPrice } = order;
   const [discount, setDiscount] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
+  const { userRole } = useLocalAuth();
 
   const totalWithDiscount = totalPrice * ((100 - Number(discount)) / 100);
 
@@ -47,9 +47,9 @@ const Order: NextPageWithLayout = () => {
         </div>
         <div className="flex flex-row my-4 justify-end">
           <div>
-            <SignedIn>
+            {userRole === "admin" && (
               <DiscountSelector value={discount} setValue={setDiscount} />
-            </SignedIn>
+            )}
           </div>
         </div>
       </div>

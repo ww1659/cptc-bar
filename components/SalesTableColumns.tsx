@@ -3,12 +3,26 @@ import {
   formatDate,
   formatName,
 } from "@/utils/helperFunctions";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/DropdownMenu";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "./ui/Badge";
-import { ArrowUpDown, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  ArrowUpDown,
+  ChevronDown,
+  ChevronUp,
+  MoreHorizontal,
+} from "lucide-react";
 import { Button } from "./ui/Button";
 import { Checkbox } from "./ui/CheckBox";
 import { SaleItem } from "@/interfaces/Sale";
+import { DeleteSaleDialog } from "./DeleteSaleDialog";
 
 export type SaleColumns = {
   id: string;
@@ -19,6 +33,7 @@ export type SaleColumns = {
   discount: string | null;
   totalPrice: string;
   saleItems: SaleItem[];
+  saleId: number;
 };
 
 export const SalesTableColumns: ColumnDef<SaleColumns>[] = [
@@ -167,5 +182,42 @@ export const SalesTableColumns: ColumnDef<SaleColumns>[] = [
 
     enableSorting: false,
     enableHiding: false,
+  },
+  {
+    id: "actions",
+    header: () => {
+      null;
+    },
+    cell: ({ row }) => {
+      const sale = row.original;
+
+      return (
+        <div className="text-right">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="center"
+              side="right"
+              sideOffset={30}
+              className="bg-white"
+            >
+              <div className="flex flex-col">
+                <div className="flex flex-row py-1 items-center">
+                  <DeleteSaleDialog
+                    saleId={sale.saleId}
+                    saleItems={sale.saleItems}
+                  />
+                </div>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      );
+    },
   },
 ];

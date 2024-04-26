@@ -82,9 +82,6 @@ export default function Navbar() {
                 },
               }}
             />
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
           </div>
         </div>
       </div>

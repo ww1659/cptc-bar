@@ -6,7 +6,11 @@ interface ErrorMessage {
   message: string;
 }
 
-type SaleResponse = Sale[] | ErrorMessage;
+interface UserData {
+  userId: string | null;
+}
+
+type SaleResponse = Sale[] | ErrorMessage | UserData;
 
 export default async function handler(
   req: NextApiRequest,

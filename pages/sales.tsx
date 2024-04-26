@@ -5,9 +5,7 @@ import { Sale } from "@/interfaces/Sale";
 import useSWR from "swr";
 import { DataTable } from "@/components/SalesTableV2";
 import { SalesTableColumns } from "../components/SalesTableColumns";
-import { Button } from "@/components/ui/Button";
-import { downloadSalesCsv } from "@/utils/helperFunctions";
-import { SignedIn } from "@clerk/nextjs";
+import { useLocalAuth } from "@/contexts/AuthContext";
 
 interface SalesProps {
   sales: Sale[];
@@ -20,14 +18,7 @@ const salesFetcher = async (url: string) => {
 
 const Sales: NextPageWithLayout<SalesProps> = () => {
   const { data: sales, error, isLoading } = useSWR("/api/sales", salesFetcher);
-
-  // const handleClick = async (sales: Sale[]) => {
-  //   try {
-  //     downloadSalesCsv(sales);
-  //   } catch (error) {
-  //     console.error("Error generating PDF:", error);
-  //   }
-  // };
+  const { userRole } = useLocalAuth();
 
   if (error) return <div>Error loading data {error}</div>;
   if (isLoading) return <div>Loading...</div>;
@@ -37,18 +28,8 @@ const Sales: NextPageWithLayout<SalesProps> = () => {
       <div className="flex flex-row justify-between max-w-4xl items-center mx-auto mb-3">
         <div className="flex flex-col items-start">
           <h1 className="text-2xl text-green-800 font-medium">Sales</h1>
-          <h3 className="text-md">Export and view previous sales</h3>
+          <h3 className="text-md">Export and view sales</h3>
         </div>
-        {/* <div>
-          <SignedIn>
-            <Button
-              className="bg-green-800 text-white"
-              onClick={() => handleClick(sales)}
-            >
-              Generate CSV
-            </Button>
-          </SignedIn>
-        </div> */}
       </div>
 
       <div className="max-w-4xl mx-auto my-1 mb-10">
@@ -58,7 +39,13 @@ const Sales: NextPageWithLayout<SalesProps> = () => {
           </>
         ) : (
           <div>
-            <DataTable columns={SalesTableColumns} data={sales} />
+            {userRole && (
+              <DataTable
+                columns={SalesTableColumns}
+                data={sales}
+                userRole={userRole}
+              />
+            )}
           </div>
         )}
       </div>
