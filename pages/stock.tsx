@@ -6,7 +6,7 @@ import useSWR from "swr";
 import { StockTableColumns } from "@/components/StockTableColumns";
 import CreateDrinkButton from "@/components/CreateDrinkButton";
 import { useAuth } from "@clerk/nextjs";
-import { Drink } from "@/interfaces/Drink";
+import { useLocalAuth } from "@/contexts/AuthContext";
 
 interface DrinkFromDB {
   drinks_id: number;
@@ -27,6 +27,7 @@ const stockFetcher = async (url: string) => {
 
 const Stock: NextPageWithLayout<{}> = () => {
   const { data: drinks, error, isLoading } = useSWR("/api/stock", stockFetcher);
+  const { userRole } = useLocalAuth();
 
   const { isLoaded, userId } = useAuth();
   if (!isLoaded || !userId) {
@@ -49,12 +50,10 @@ const Stock: NextPageWithLayout<{}> = () => {
         <div className="flex flex-row justify-between max-w-4xl mx-auto items-center mb-3">
           <div className="flex flex-col items-start">
             <p className="text-2xl text-green-800 font-medium">Stock</p>
-            <p className="text-md">
-              View, update and manage your stock here...
-            </p>
+            <p className="text-md">View, update and manage your stock</p>
           </div>
           <div>
-            <CreateDrinkButton />
+            <CreateDrinkButton userRole={userRole} />
           </div>
         </div>
         <div className="max-w-4xl m-auto my-1 mb-10">
@@ -64,7 +63,11 @@ const Stock: NextPageWithLayout<{}> = () => {
             </>
           ) : (
             <div>
-              <StockTable columns={StockTableColumns} data={stockTableData} />
+              <StockTable
+                columns={StockTableColumns}
+                data={stockTableData}
+                userRole={userRole}
+              />
             </div>
           )}
         </div>

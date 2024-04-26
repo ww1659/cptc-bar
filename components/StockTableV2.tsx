@@ -28,11 +28,13 @@ import { Input } from "./ui/Input";
 interface StockTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  userRole: String;
 }
 
 export function StockTable<TData, TValue>({
   columns,
   data,
+  userRole,
 }: StockTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([
     { id: "brewery", desc: true },
@@ -68,7 +70,18 @@ export function StockTable<TData, TValue>({
     },
   });
 
-  console.log(sorting);
+  React.useEffect(() => {
+    if (userRole) {
+      setColumnVisibility({
+        ...columnVisibility,
+        cost: userRole === "admin",
+        inc: userRole === "admin",
+        profit: userRole === "admin",
+        actions: userRole === "admin",
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userRole]);
 
   return (
     <div>

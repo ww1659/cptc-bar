@@ -4,16 +4,16 @@ const publicPaths = ["/", "/sign-in*", "/sign-up*"];
 
 export default authMiddleware({
   // Allow signed out users to access the specified routes:
-  publicRoutes: [
-    "/",
-    "/order",
-    "/sales",
-    "/sign-in",
-    "/drinks/(.*)",
-    "/api/drinks/(.*)",
-    "/api/order",
-    "/api/sales",
-  ],
+  // publicRoutes: [
+  //   "/",
+  //   "/order",
+  //   "/sales",
+  //   "/sign-in",
+  //   "/drinks/(.*)",
+  //   "/api/drinks/(.*)",
+  //   "/api/order",
+  //   "/api/sales",
+  // ],
 });
 
 export const config = {

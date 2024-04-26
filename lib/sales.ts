@@ -104,3 +104,36 @@ const mapSaleItemsData = (data: any[]): SaleItem[] => {
     profit: saleItem.profit,
   }));
 };
+
+export async function deleteSaleAndUpdateStock(
+  saleId: number,
+  saleItems: Array<{ drinkId: number; quantity: number }>
+): Promise<void> {
+  const client = await db.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    const deleteSaleQuery = `DELETE FROM sales WHERE sale_id = $1`;
+    await client.query(deleteSaleQuery, [saleId]);
+
+    // Update stock for each drink item
+    const updateStockPromises = saleItems.map(async (item) => {
+      const updateStockQuery = `
+        UPDATE drinks
+        SET quantity = quantity + $1
+        WHERE drinks_id = $2`;
+      await client.query(updateStockQuery, [item.quantity, item.drinkId]);
+    });
+
+    await Promise.all(updateStockPromises);
+
+    await client.query("COMMIT");
+  } catch (error) {
+    console.error("Database Error:", error);
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
+}

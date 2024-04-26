@@ -1,31 +1,54 @@
-import React, { createContext, ReactNode, useState } from "react";
+import { useAuth } from "@clerk/nextjs";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  FC,
+  ReactNode,
+  useContext,
+} from "react";
+import useSWR from "swr";
 
-type Props = {
-  children?: ReactNode;
+interface IAuthContext {
+  userRole: string;
+  isAdmin: () => void;
+}
+
+const AuthContext = createContext<IAuthContext>({
+  userRole: "",
+  isAdmin: () => {},
+});
+
+const userFetcher = async (url: string) => {
+  const response = await fetch(url);
+  return response.json();
 };
 
-type IAuthContext = {
-  authenticated: boolean;
-  setAuthenticated: (newState: boolean) => void;
-};
+const AuthProvider: FC<{ children?: ReactNode }> = ({ children }) => {
+  const [userRole, setUserRole] = useState("");
+  const { data: user } = useSWR("/api/user", userFetcher);
 
-const initialValue = {
-  authenticated: false,
-  setAuthenticated: () => {},
-};
+  useEffect(() => {
+    if (user && user.userRole) {
+      setUserRole(user.userRole);
+    }
+  }, [user]);
 
-const AuthContext = createContext<IAuthContext>(initialValue);
-
-const AuthProvider = ({ children }: Props) => {
-  const [authenticated, setAuthenticated] = useState(
-    initialValue.authenticated
-  );
+  const isAdmin = () => userRole === "admin";
 
   return (
-    <AuthContext.Provider value={{ authenticated, setAuthenticated }}>
+    <AuthContext.Provider value={{ userRole, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export { AuthContext, AuthProvider };
+const useLocalAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};
+
+export { AuthProvider, useLocalAuth };

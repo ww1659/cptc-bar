@@ -5,6 +5,9 @@ import DrinkBlock from "../components/DrinkBlock";
 import OrderButton from "@/components/OrderButton";
 import { HomeIcon } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { useLocalAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@clerk/nextjs";
+import { OrganizationSwitcher, Protect } from "@clerk/clerk-react";
 
 const drinks = [
   { title: "Good Chemistry", href: "/drinks" },
@@ -18,6 +21,10 @@ const drinks = [
 ];
 
 const Page: NextPageWithLayout = () => {
+  const { userRole } = useLocalAuth();
+
+  console.log(userRole);
+
   return (
     <div className="w-full">
       <div className="flex justify-between items-center flex-row mb-3">

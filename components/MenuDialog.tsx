@@ -45,20 +45,20 @@ export const MenuDialog: React.FC<MenuDialogProps> = ({ menuItems }) => {
             } else {
               return (
                 <li key={item.text} className="my-4">
-                  <Link className="hover:text-green-800" href={item.href}>
-                    {item.text}
-                  </Link>
+                  <SheetClose asChild>
+                    <Link className="hover:text-green-800" href={item.href}>
+                      {item.text}
+                    </Link>
+                  </SheetClose>
                 </li>
               );
             }
           })}
         </ul>
         <SheetFooter className="sm:justify-center">
-          <SheetClose asChild></SheetClose>
-          {/* <UserButton /> */}
-          <div className="my-4">
-            {isSignedIn ? <SignOutButton /> : <SignInButton />}
-          </div>
+          <SheetClose asChild>
+            <div className="my-4">{isSignedIn ? <SignOutButton /> : null}</div>
+          </SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>

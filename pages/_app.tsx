@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
 import { OrderProvider } from "../contexts/OrderContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -15,8 +16,10 @@ type AppPropsWithLayout = AppProps & {
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
   return getLayout(
-    <OrderProvider>
-      <Component {...pageProps} />
-    </OrderProvider>
+    <AuthProvider>
+      <OrderProvider>
+        <Component {...pageProps} />
+      </OrderProvider>
+    </AuthProvider>
   );
 }

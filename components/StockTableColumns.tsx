@@ -22,7 +22,6 @@ import {
 } from "./ui/DropdownMenu";
 import { UpdateDrinkDialog } from "./UpdateDrinkDialog";
 import { DeleteDrinkDialog } from "./DeleteDrinkDialog";
-import { UpdateIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 
 export type StockTableColumnsProps = {
