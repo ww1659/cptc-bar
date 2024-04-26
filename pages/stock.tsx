@@ -44,8 +44,6 @@ const Stock: NextPageWithLayout<{}> = () => {
       };
     });
 
-    console.log(stockTableData, "STOCK TABLE DATA");
-
     return (
       <div className="w-full">
         <div className="flex flex-row justify-between max-w-4xl mx-auto items-center mb-3">
