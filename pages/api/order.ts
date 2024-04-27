@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createSaleAndItemsAndUpdateDrinks } from "@/lib/order";
 import { Sale } from "@/interfaces/Sale";
+import { getAuth } from "@clerk/nextjs/server";
 
 interface ErrorMessage {
   message: string;
@@ -16,6 +17,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<SaleResponse>
 ) {
+  const { userId } = getAuth(req);
+  if (!userId) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
   if (req.method === "POST") {
     try {
       const { sales, items } = req.body;

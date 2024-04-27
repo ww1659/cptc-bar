@@ -6,7 +6,6 @@ import useSWR from "swr";
 import { StockTableColumns } from "@/components/StockTableColumns";
 import CreateDrinkButton from "@/components/CreateDrinkButton";
 import { useAuth } from "@clerk/nextjs";
-import { useLocalAuth } from "@/contexts/AuthContext";
 
 interface DrinkFromDB {
   drinks_id: number;
@@ -25,9 +24,19 @@ const stockFetcher = async (url: string) => {
   return response.json();
 };
 
+const userFetcher = async (url: string) => {
+  const response = await fetch(url);
+  return response.json();
+};
+
 const Stock: NextPageWithLayout<{}> = () => {
   const { data: drinks, error, isLoading } = useSWR("/api/stock", stockFetcher);
-  const { userRole } = useLocalAuth();
+  const { data: user } = useSWR("/api/user", userFetcher);
+
+  let userRole = "";
+  if (user) {
+    userRole = user.userRole;
+  }
 
   const { isLoaded, userId } = useAuth();
   if (!isLoaded || !userId) {

@@ -2,7 +2,6 @@ import React, { PropsWithChildren } from "react";
 import Navbar from "./Navbar";
 import { Toaster } from "./ui/Toaster";
 import { ClerkProvider } from "@clerk/nextjs";
-import Footer from "./Footer";
 
 export default function Layout({ children }: PropsWithChildren) {
   return (

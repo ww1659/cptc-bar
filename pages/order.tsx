@@ -5,13 +5,16 @@ import OrderTable from "@/components/OrderTable";
 import { useOrder } from "@/contexts/OrderContext";
 import PlaceOrderButton from "@/components/PlaceOrderButton";
 import { DiscountSelector } from "@/components/DiscountSelector";
-import { SignedIn } from "@clerk/nextjs";
 import { OrderDialog } from "@/components/OrderDialog";
 import useSWR from "swr";
-import { useLocalAuth } from "@/contexts/AuthContext";
 
 const formatTotal = (total: number) => {
   return total.toFixed(2);
+};
+
+const userFetcher = async (url: string) => {
+  const response = await fetch(url);
+  return response.json();
 };
 
 const Order: NextPageWithLayout = () => {
@@ -19,8 +22,12 @@ const Order: NextPageWithLayout = () => {
   const { totalPrice } = order;
   const [discount, setDiscount] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { userRole } = useLocalAuth();
+  const { data: user } = useSWR("/api/user", userFetcher);
 
+  let userRole = "";
+  if (user) {
+    userRole = user.userRole;
+  }
   const totalWithDiscount = totalPrice * ((100 - Number(discount)) / 100);
 
   return (

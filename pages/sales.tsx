@@ -5,7 +5,6 @@ import { Sale } from "@/interfaces/Sale";
 import useSWR from "swr";
 import { DataTable } from "@/components/SalesTableV2";
 import { SalesTableColumns } from "../components/SalesTableColumns";
-import { useLocalAuth } from "@/contexts/AuthContext";
 
 interface SalesProps {
   sales: Sale[];
@@ -16,9 +15,19 @@ const salesFetcher = async (url: string) => {
   return response.json();
 };
 
+const userFetcher = async (url: string) => {
+  const response = await fetch(url);
+  return response.json();
+};
+
 const Sales: NextPageWithLayout<SalesProps> = () => {
   const { data: sales, error, isLoading } = useSWR("/api/sales", salesFetcher);
-  const { userRole } = useLocalAuth();
+  const { data: user } = useSWR("/api/user", userFetcher);
+
+  let userRole = "";
+  if (user) {
+    userRole = user.userRole;
+  }
 
   if (error) return <div>Error loading data {error}</div>;
   if (isLoading) return <div>Loading...</div>;
