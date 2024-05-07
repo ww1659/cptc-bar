@@ -10,7 +10,7 @@ Username: guest
 
 Password: guest1
 
-This is a preview / development environment so feel free to make changes. This project is also running in production and is currently live.
+This is a preview / development environment so feel free to submit orders or update the stock. This project is also running in production and is currently live.
 
 ## Features
 
