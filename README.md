@@ -5,7 +5,9 @@ Welcome to this repo. This project is the first I have attempted with Next.js, u
 The project is currently deployed here: https://cptc-bar.vercel.app/
 
 You will need to sign in, you can use these credentials as a guest:
+
 Username: guest
+
 Password: guest1
 
 This is a preview / development environment so feel free to make changes. This project is also running in production and is currently live.
