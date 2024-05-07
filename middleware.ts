@@ -3,7 +3,7 @@ import { authMiddleware } from "@clerk/nextjs";
 const publicPaths = ["/", "/sign-in*", "/sign-up*"];
 
 export default authMiddleware({
-  // Allow signed out users to access the specified routes:
+  // Allow signed out users to access the specified routes for preview purposes only:
   // publicRoutes: [
   //   "/",
   //   "/order",
