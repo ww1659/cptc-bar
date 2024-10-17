@@ -8,13 +8,13 @@ You will need to sign in, you can use these credentials as a guest:
 
 Username: guest
 
-Password: guest1
+Password: test
 
 This is a preview / development environment so feel free to submit orders or update the stock. This project is also running in production and is currently live.
 
 ## Features
 
-There is always more to be done, but as of now some of the main aspects of this project are:
+There is more I'd like to do, but as of now some of the main aspects of this project are:
 
 - Authentication with Clerk
 - Build an order and generate a sale
