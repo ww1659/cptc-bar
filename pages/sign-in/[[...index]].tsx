@@ -6,7 +6,7 @@ import Layout from "@/components/Layout";
 const Page: NextPageWithLayout = () => {
   return (
     <div className="my-10">
-      <SignIn />
+      <SignIn initialValues={{ username: "guest" }} />
     </div>
   );
 };

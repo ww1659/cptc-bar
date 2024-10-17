@@ -23,8 +23,6 @@ const drinks = [
 const Page: NextPageWithLayout = () => {
   const { userRole } = useLocalAuth();
 
-  console.log(userRole);
-
   return (
     <div className="w-full">
       <div className="flex justify-between items-center flex-row mb-3">

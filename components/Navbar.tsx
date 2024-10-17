@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { SignedOut, UserButton, useAuth } from "@clerk/nextjs";
+import { SignOutButton, SignedOut, UserButton, useAuth } from "@clerk/nextjs";
 import SignInButton from "../components/SignInButton";
 import { useUser } from "@clerk/nextjs";
 import { MenuDialog } from "./MenuDialog";
+import { Button } from "./ui/Button";
 
 interface NavItem {
   text: string;
@@ -20,7 +21,7 @@ const menuItems: NavItem[] = [
 ];
 
 export default function Navbar() {
-  const { isSignedIn } = useUser();
+  const { isSignedIn, user } = useUser();
 
   return (
     <nav className="border-b-2 border-green-800">
@@ -74,14 +75,20 @@ export default function Navbar() {
 
         <div className="hidden flex flex-row items-center justify-between md:block">
           <div className="mx-2">
-            <UserButton
-              afterSignOutUrl="/"
-              appearance={{
-                elements: {
-                  avatarBox: "h-11 w-11",
-                },
-              }}
-            />
+            {user?.username === "guest" ? (
+              <Button>
+                <SignOutButton />
+              </Button>
+            ) : (
+              <UserButton
+                afterSignOutUrl="/"
+                appearance={{
+                  elements: {
+                    avatarBox: "h-11 w-11",
+                  },
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
