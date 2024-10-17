@@ -1,10 +1,16 @@
 ## Hello!
 
-Welcome to this repo. This project is the first I have attempted with Next.js, using the in-built API routes for backend integration.
+Welcome to this repo. This project is the first I have attempted with Next.js, using the in-built Pages router for backend integration.
 
 The project is currently deployed here: https://cptc-bar.vercel.app/
 
-This is a development environment, but this project is running in production and is currently live.
+You will need to sign in, you can use these credentials as a guest:
+
+Username: guest
+
+Password: guest1
+
+This is a preview / development environment so feel free to submit orders or update the stock. This project is also running in production and is currently live.
 
 ## Features
 
